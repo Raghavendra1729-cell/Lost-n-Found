@@ -16,8 +16,10 @@ const register = async (req, res) => {
         res.cookie('token', token, { 
             httpOnly: true, 
             secure: process.env.NODE_ENV === 'production', // Only secure in production
-            sameSite: 'strict', 
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+            sameSite: 'lax', // Changed from 'strict' to 'lax' for better compatibility
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+            domain: 'localhost', // Explicitly set domain
+            path: '/' // Explicitly set path
         })
         user.password = undefined // Remove password from response for security reasons
         res.status(201).json({ message: 'User created successfully', user })
@@ -42,12 +44,17 @@ const login = async (req, res) => {
             return res.status(400).json({ message: 'Invalid password' })
         }
         const token = generateToken(user._id)
+        console.log('🔍 Generated token for user:', user.email)
+        console.log('🔍 Setting cookie with token...')
         res.cookie('token', token, { 
             httpOnly: true, 
             secure: process.env.NODE_ENV === 'production', // Only secure in production
-            sameSite: 'strict', 
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+            sameSite: 'lax', // Changed from 'strict' to 'lax' for better compatibility
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+            domain: 'localhost', // Explicitly set domain
+            path: '/' // Explicitly set path
         })
+        console.log('✅ Cookie set successfully')
         user.password = undefined // Remove password from response for security reasons
         res.status(200).json({ message: 'Logged in successfully', user })
     } catch (error) {
@@ -61,8 +68,10 @@ const logout = async (req, res) => {
         res.cookie('token', '', { 
             httpOnly: true, 
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict', 
-            maxAge: 0 
+            sameSite: 'lax', 
+            maxAge: 0,
+            domain: 'localhost',
+            path: '/'
         })
         res.status(200).json({ message: 'Logged out successfully' })
     } catch (error) {
@@ -104,14 +113,19 @@ const googleCallback = (req, res, next) => {
             
             // Generate JWT token
             const token = generateToken(user._id)
+            console.log('🔍 Generated token for Google user:', user.email)
+            console.log('🔍 Setting cookie with token...')
             
             // Set cookie
             res.cookie('token', token, { 
                 httpOnly: true, 
                 secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict', 
-                maxAge: 30 * 24 * 60 * 60 * 1000
+                sameSite: 'lax', 
+                maxAge: 30 * 24 * 60 * 60 * 1000,
+                domain: 'localhost',
+                path: '/'
             })
+            console.log('✅ Google OAuth cookie set successfully')
             
             // Remove password from response
             user.password = undefined

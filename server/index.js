@@ -5,6 +5,7 @@ import cors from 'cors'
 import session from 'express-session'
 import passport from './config/passport.js'
 import authRoutes from './routes/auth_routes.js'
+import cookieParser from 'cookie-parser'
 
 //initialize express app
 const app = express()
@@ -12,6 +13,7 @@ const app = express()
 //middlewares
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
 app.use(cors({
     origin: ['http://localhost:5173'], 
     credentials: true
