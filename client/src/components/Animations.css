@@ -1,0 +1,113 @@
+/* Clean Animations CSS - Only used animations */
+
+/* Keyframe Animations */
+@keyframes glow-horizontal {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scaleX(0.3);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes glow-vertical {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scaleY(0.3);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes pulse-orb {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes pulse-orb-slow {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes particle-float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translateY(-15px) translateX(8px);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-8px) translateX(-4px);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translateY(-20px) translateX(12px);
+    opacity: 0.9;
+  }
+}
+
+/* Animation Classes */
+.animate-glow-horizontal {
+  animation: glow-horizontal 8s ease-in-out infinite;
+}
+
+.animate-glow-vertical {
+  animation: glow-vertical 8s ease-in-out infinite;
+}
+
+.animate-pulse-orb {
+  animation: pulse-orb 3s ease-in-out infinite;
+}
+
+.animate-pulse-orb-slow {
+  animation: pulse-orb-slow 5s ease-in-out infinite;
+}
+
+.animate-particle-float {
+  animation: particle-float 15s ease-in-out infinite;
+}
+
+/* Animation Delays - Only used delays */
+.animation-delay-1000 { animation-delay: 1s; }
+.animation-delay-2000 { animation-delay: 2s; }
+.animation-delay-3000 { animation-delay: 3s; }
+.animation-delay-4000 { animation-delay: 4s; }
+.animation-delay-5000 { animation-delay: 5s; }
+.animation-delay-6000 { animation-delay: 6s; }
+.animation-delay-7000 { animation-delay: 7s; }
+.animation-delay-8000 { animation-delay: 8s; }
+.animation-delay-9000 { animation-delay: 9s; }
+.animation-delay-10000 { animation-delay: 10s; }
+.animation-delay-11000 { animation-delay: 11s; }
+.animation-delay-12000 { animation-delay: 12s; }
+.animation-delay-13000 { animation-delay: 13s; }
+.animation-delay-14000 { animation-delay: 14s; }
+.animation-delay-15000 { animation-delay: 15s; }
+.animation-delay-16000 { animation-delay: 16s; }
+.animation-delay-17000 { animation-delay: 17s; }
+.animation-delay-18000 { animation-delay: 18s; }
+.animation-delay-19000 { animation-delay: 19s; }
+.animation-delay-20000 { animation-delay: 20s; }
+.animation-delay-21000 { animation-delay: 21s; }
+.animation-delay-22000 { animation-delay: 22s; }
+.animation-delay-23000 { animation-delay: 23s; }
+.animation-delay-24000 { animation-delay: 24s; }
+.animation-delay-25000 { animation-delay: 25s; }
