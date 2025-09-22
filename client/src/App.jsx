@@ -1,9 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import HomePage from './pages/HomePage'
-import LoginPage from './pages/LoginPage'
-import RegisterPage from './pages/RegisterPage'
-import UserProfile from './components/UserProfile'
+import { HomePage, LoginPage, RegisterPage } from './pages'
+import { UserProfile } from './components'
 import './App.css'
 
 function App() {

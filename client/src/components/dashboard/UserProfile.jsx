@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { getUserProfile } from '../api/auth_api'
+import { getUserProfile } from '../../api/auth_api'
 
 const UserProfile = () => {
   const [user, setUser] = useState(null)
@@ -31,7 +31,7 @@ const UserProfile = () => {
   const handleLogout = async () => {
     try {
       // Import logout function dynamically to avoid circular imports
-      const { logoutUser } = await import('../api/auth_api')
+      const { logoutUser } = await import('../../api/auth_api')
       await logoutUser()
       setUser(null)
       window.location.href = '/'

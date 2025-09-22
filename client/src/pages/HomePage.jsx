@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { getUserProfile, logoutUser, handleGoogleCallback } from '../api/auth_api'
-import AnimatedBackground from '../components/AnimatedBackground'
-import Navigation from '../components/Navigation'
-import Dashboard from '../components/Dashboard'
-import LandingPage from '../components/LandingPage'
-import SearchModal from '../components/SearchModal'
-import ReportModal from '../components/ReportModal'
-import '../components/Animations.css'
+import { AnimatedBackground, Navigation, Dashboard, LandingPage, SearchModal, ReportModal } from '../components'
+import '../components/ui/Animations.css'
 
 const HomePage = () => {
   const [user, setUser] = useState(null)
