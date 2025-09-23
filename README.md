@@ -137,7 +137,9 @@ lost-and-found-app/
    JWT_SECRET=your-super-secret-jwt-key-here
    SESSION_SECRET=your-session-secret-here
    PORT=5000
-   CLIENT_URL=http://localhost:3000
+   CLIENT_URL=http://localhost:5173
+   GOOGLE_CLIENT_ID=your-google-client-id
+   GOOGLE_CLIENT_SECRET=your-google-client-secret
    ```
 
 4. **Start the application**
@@ -192,6 +194,7 @@ npm run dev              # Start with nodemon (development)
 - `POST /api/auth/logout` - User logout
 - `GET /api/auth/profile` - Get user profile
 - `GET /api/auth/google` - Google OAuth login
+- `POST /api/auth/phone` - Update phone (after Google OAuth)
 
 ### Items (Coming Soon)
 - `GET /api/items` - Get all items
@@ -232,11 +235,24 @@ import { HomePage, LoginPage } from '../pages'
 
 ## 🔐 Authentication Flow
 
-1. **Registration/Login**: User creates account or logs in
-2. **JWT Token**: Server issues JWT token upon successful auth
-3. **Token Storage**: Token stored in localStorage
-4. **Protected Routes**: JWT middleware protects API endpoints
-5. **Google OAuth**: Alternative authentication via Google
+1. **Email/Password Registration**
+   - User provides `name`, `email`, `phone`, `password`
+   - Backend validates, hashes, creates user, sets `token` cookie
+
+2. **Email/Password Login**
+   - User provides `email`, `password`
+   - Backend validates, sets `token` cookie
+
+3. **Google OAuth Login**
+   - User is redirected to `GET /api/auth/google`
+   - On callback, server logs the user in and sets `token` cookie
+   - If the user has no `phone`, the server redirects to client with `?auth=success&needsPhone=true`
+   - Client shows a phone modal and calls `POST /api/auth/phone` to save the number
+   - After saving, client refreshes profile and proceeds
+
+4. **Protected Routes**
+   - `authMiddleware` validates the `token` cookie (or Bearer header)
+   - `GET /api/auth/profile` returns authenticated user
 
 ## 🗄️ Database Schema
 

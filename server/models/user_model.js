@@ -13,14 +13,30 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
         lowercase: true,
-        trim: true
+        trim: true,
+        validate: {
+            validator: function(value) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+                return emailRegex.test(value)
+            },
+            message: 'Invalid email format'
+        }
     },
     phone: {
         type: String,
         required: function() {
             return !this.isGoogleAuth
         },
-        trim: true
+        trim: true,
+        validate: {
+            validator: function(value) {
+                // Allow empty when Google auth, otherwise enforce 10 digits
+                if (this.isGoogleAuth && (!value || String(value).trim().length === 0)) return true
+                const phoneRegex = /^\d{10}$/
+                return phoneRegex.test(value)
+            },
+            message: 'Phone must be exactly 10 digits'
+        }
     },
     
     // Authentication

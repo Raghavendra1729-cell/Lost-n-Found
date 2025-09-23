@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { getUserProfile, logoutUser, handleGoogleCallback } from '../api/auth_api'
+import { getUserProfile, logoutUser, handleGoogleCallback, updatePhone } from '../api/auth_api'
 import { AnimatedBackground, Navigation, Dashboard, LandingPage, SearchModal, ReportModal } from '../components'
+import { createObject } from '../api/object_api'
+import { PhoneModal } from '../components/modals'
 import '../components/ui/Animations.css'
 
 const HomePage = () => {
@@ -12,10 +14,15 @@ const HomePage = () => {
   const [showSearchModal, setShowSearchModal] = useState(false)
   const [showReportModal, setShowReportModal] = useState(false)
   const [reportType, setReportType] = useState('lost') // 'lost' or 'found'
+  const [showPhoneModal, setShowPhoneModal] = useState(false)
 
   useEffect(() => {
     // Handle Google OAuth callback first
-    handleGoogleCallback()
+    const result = handleGoogleCallback()
+    if (result?.auth === 'success' && result?.needsPhone) {
+      setShowPhoneModal(true)
+      // don't cleanup history yet to preserve behavior, caller can close modal
+    }
     // Then check user authentication
     checkUserAuth()
   }, [])
@@ -68,11 +75,20 @@ const HomePage = () => {
     setShowReportModal(true)
   }
 
-  const handleReportSubmit = (e) => {
-    e.preventDefault()
-    console.log('Reporting', reportType, 'item')
-    // TODO: Implement report functionality
-    setShowReportModal(false)
+  const [refreshKey, setRefreshKey] = useState(0)
+
+  const handleReportSubmit = async (payload) => {
+    try {
+      const data = {
+        ...payload,
+        date: payload.date ? new Date(payload.date).toISOString() : new Date().toISOString()
+      }
+      await createObject(data)
+      setShowReportModal(false)
+      setRefreshKey((k) => k + 1)
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to create object')
+    }
   }
 
   return (
@@ -90,6 +106,7 @@ const HomePage = () => {
             user={user} 
             onReportItem={handleReportItem} 
             onSearch={() => setShowSearchModal(true)} 
+            key={refreshKey}
           />
         ) : (
           <LandingPage onSearch={() => setShowSearchModal(true)} />
@@ -114,6 +131,20 @@ const HomePage = () => {
         onClose={() => setShowReportModal(false)}
         reportType={reportType}
         onSubmit={handleReportSubmit}
+      />
+
+      <PhoneModal
+        isOpen={showPhoneModal}
+        onClose={() => setShowPhoneModal(false)}
+        onSubmit={async (phone) => {
+          try {
+            await updatePhone(phone)
+            setShowPhoneModal(false)
+            await checkUserAuth()
+          } catch (e) {
+            alert('Failed to save phone. Please try again.')
+          }
+        }}
       />
 
       {/* Footer */}

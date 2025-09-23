@@ -99,20 +99,38 @@ export const handleGoogleCallback = () => {
   const urlParams = new URLSearchParams(window.location.search)
   const authResult = urlParams.get('auth')
   const message = urlParams.get('message')
-  
+  const needsPhone = urlParams.get('needsPhone') === 'true'
+
+  const cleanup = () => {
+    window.history.replaceState({}, document.title, window.location.pathname)
+  }
+
   if (authResult === 'success') {
     console.log('✅ Google OAuth successful!')
-    alert('Google authentication successful!')
-    // Redirect to home page
+    if (needsPhone) {
+      // Don't redirect; signal caller to collect phone
+      return { auth: 'success', needsPhone: true, cleanup }
+    }
+    cleanup()
     window.location.href = '/'
+    return { auth: 'success', needsPhone: false }
   } else if (authResult === 'error') {
     console.log('❌ Google OAuth failed:', message)
     alert(`Google authentication failed: ${message}`)
+    cleanup()
+    return { auth: 'error', message }
   }
-  
-  // Clean up URL parameters
-  if (authResult) {
-    window.history.replaceState({}, document.title, window.location.pathname)
+
+  return null
+}
+
+// 7. Update phone for authenticated user (used after Google OAuth)
+export const updatePhone = async (phone) => {
+  try {
+    const response = await api.post('/auth/phone', { phone })
+    return response.data
+  } catch (error) {
+    throw error
   }
 }
 

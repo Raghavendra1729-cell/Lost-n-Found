@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const ReportModal = ({ 
   isOpen, 
@@ -7,6 +7,24 @@ const ReportModal = ({
   onSubmit 
 }) => {
   if (!isOpen) return null
+
+  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
+  const [location, setLocation] = useState('')
+  const [date, setDate] = useState('')
+  const [image, setImage] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSubmit({
+      name,
+      description,
+      location,
+      date,
+      image,
+      type: reportType
+    })
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -23,12 +41,14 @@ const ReportModal = ({
           </button>
         </div>
         
-        <form onSubmit={onSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block text-gray-300 font-medium mb-2">Item Name</label>
             <input
               type="text"
               placeholder="e.g., iPhone 13, Black Wallet, Red Backpack"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
             />
           </div>
@@ -38,6 +58,8 @@ const ReportModal = ({
             <textarea
               placeholder="Describe the item in detail..."
               rows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400 resize-none"
             />
           </div>
@@ -48,6 +70,8 @@ const ReportModal = ({
               <input
                 type="text"
                 placeholder="Where did you lose/find it?"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
               />
             </div>
@@ -56,9 +80,22 @@ const ReportModal = ({
               <label className="block text-gray-300 font-medium mb-2">Date</label>
               <input
                 type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white"
               />
             </div>
+          </div>
+
+          <div>
+            <label className="block text-gray-300 font-medium mb-2">Image URL</label>
+            <input
+              type="text"
+              placeholder="Paste an image URL"
+              value={image}
+              onChange={(e) => setImage(e.target.value)}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400"
+            />
           </div>
           
           <div>

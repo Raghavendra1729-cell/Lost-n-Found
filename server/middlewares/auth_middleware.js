@@ -45,4 +45,13 @@ const authMiddleware = async (req, res, next) => {
     }
 }
 
-export default authMiddleware
+const requirePhoneMiddleware = (req, res, next) => {
+    const user = req.user
+    if (!user || !user.phone || user.phone.trim().length === 0) {
+        return res.status(400).json({
+            message: 'Phone number required to perform this action.'
+        })
+    }
+    next()
+}
+export {authMiddleware, requirePhoneMiddleware}

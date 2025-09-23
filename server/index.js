@@ -5,6 +5,7 @@ import cors from 'cors'
 import session from 'express-session'
 import passport from './config/passport.js'
 import authRoutes from './routes/auth_routes.js'
+import objectRoutes from './routes/object_routes.js'
 import cookieParser from 'cookie-parser'
 
 //initialize express app
@@ -26,7 +27,7 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+        maxAge: 30 * 24 * 60 * 60 * 1000 
     }
 }))
 
@@ -37,6 +38,8 @@ app.use(passport.session())
 
 //routes
 app.use('/api/auth', authRoutes)
+app.use('/api/objects', objectRoutes)
+
 
 
 
