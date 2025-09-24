@@ -27,14 +27,13 @@ const LoginPage = () => {
       const data = await loginUser(formData)
       
       console.log('✅ Login successful:', data)
-      alert(`Login successful! Welcome back ${data.user.name}`)
       // Redirect to home page
       window.location.href = '/'
       
     } catch (error) {
       console.error('❌ Login failed:', error)
       const errorMessage = error.response?.data?.message || 'Login failed. Please check your credentials.'
-      alert(errorMessage)
+      console.error('Login error:', errorMessage)
     } finally {
       setIsLoading(false)
     }

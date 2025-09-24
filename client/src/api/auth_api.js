@@ -116,7 +116,7 @@ export const handleGoogleCallback = () => {
     return { auth: 'success', needsPhone: false }
   } else if (authResult === 'error') {
     console.log('❌ Google OAuth failed:', message)
-    alert(`Google authentication failed: ${message}`)
+    console.error('Google authentication failed:', message)
     cleanup()
     return { auth: 'error', message }
   }

@@ -25,12 +25,12 @@ const RegisterPage = () => {
     e.preventDefault()
     
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!')
+      console.error('Passwords do not match!')
       return
     }
     
     if (formData.password.length < 6) {
-      alert('Password must be at least 6 characters long!')
+      console.error('Password must be at least 6 characters long!')
       return
     }
     
@@ -42,14 +42,13 @@ const RegisterPage = () => {
       const data = await registerUser(formData)
       
       console.log('✅ Registration successful:', data)
-      alert(`Registration successful! Welcome ${data.user.name}`)
       // Redirect to home page
       window.location.href = '/'
       
     } catch (error) {
       console.error('❌ Registration failed:', error)
       const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.'
-      alert(errorMessage)
+      console.error('Registration error:', errorMessage)
     } finally {
       setIsLoading(false)
     }

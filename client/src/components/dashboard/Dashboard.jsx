@@ -4,15 +4,15 @@ import LostList from '../objects/LostList'
 import FoundList from '../objects/FoundList'
 import ArchiveList from '../objects/ArchiveList'
 import SearchBar from '../objects/SearchBar'
-import QuickStats from './QuickStats'
-import QuickActions from './QuickActions'
-import FeaturedItems from './FeaturedItems'
+import SearchResults from '../objects/SearchResults'
 
-const Dashboard = ({ user, onReportItem, onSearch }) => {
+const Dashboard = ({ user, onReportItem }) => {
   const [items, setItems] = useState([])
   const [archive, setArchive] = useState([])
   const [matches, setMatches] = useState({})
   const [query, setQuery] = useState({ text: '', location: '', type: 'all' })
+  const [activeTab, setActiveTab] = useState('lost') // 'lost', 'found', 'archive'
+  const [showSearchResults, setShowSearchResults] = useState(false)
 
   const refresh = async () => {
     const { results } = await getMyObjects()
@@ -49,50 +49,122 @@ const Dashboard = ({ user, onReportItem, onSearch }) => {
     return true
   })
 
+  const lostItems = filtered.filter(item => item.type === 'lost' && item.status === 'active')
+  const foundItems = filtered.filter(item => item.type === 'found' && item.status === 'active')
+
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-6xl mx-auto">
       {/* Welcome Header */}
-      <div className="text-center mb-16">
-        <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-          SST Lost and Found
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+          <span className="professional-text">Welcome back,</span>
         </h1>
-        <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-          Welcome back, <span className="text-blue-300 font-semibold">{user.name}</span>! 
-          Manage your lost and found items.
+        <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed professional-text-shadow">
+          <span className="text-blue-300 font-semibold">{user.name}</span>! 
+          Manage your lost and found items efficiently.
         </p>
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid lg:grid-cols-3 gap-8 mb-16">
-        {/* Left Column - Lists and Search */}
-        <div className="lg:col-span-2">
-          <div className="bg-gray-800/30 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50 mb-6">
-            <h2 className="text-2xl font-bold text-white mb-4">Search</h2>
-            <SearchBar query={query} onChange={setQuery} onSearch={() => { /* filtering is live */ }} />
-          </div>
-          <div className="bg-gray-800/30 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50 mb-6">
-            <h2 className="text-2xl font-bold text-white mb-4">Lost Items</h2>
-            <LostList items={filtered} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} />
-          </div>
-          <div className="bg-gray-800/30 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50">
-            <h2 className="text-2xl font-bold text-white mb-4">Found Items</h2>
-            <FoundList items={filtered} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} />
-          </div>
+      {/* Main Content */}
+      <div className="space-y-8">
+        {/* Search Section */}
+        <div className="bg-gray-800/40 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50 professional-bg">
+          <h2 className="text-2xl font-bold text-white mb-6 professional-text-shadow">Search All Items</h2>
+          <SearchBar 
+            query={query} 
+            onChange={setQuery} 
+            onSearch={() => setShowSearchResults(true)} 
+          />
         </div>
 
-        {/* Right Column - Quick Stats and Actions */}
-        <div className="space-y-6">
-          <QuickStats />
-          <QuickActions onReportItem={onReportItem} onSearch={onSearch} />
-          <div className="bg-gray-800/30 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50">
-            <h3 className="text-lg font-semibold text-white mb-4">Archive</h3>
-            <ArchiveList items={archive} />
+        {/* Tab Navigation */}
+        <div className="bg-gray-800/40 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50 professional-bg">
+          <div className="flex flex-wrap gap-4 mb-6">
+            <button
+              onClick={() => setActiveTab('lost')}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                activeTab === 'lost'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/25'
+                  : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50'
+              }`}
+            >
+              Lost Items ({lostItems.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('found')}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                activeTab === 'found'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/25'
+                  : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50'
+              }`}
+            >
+              Found Items ({foundItems.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('archive')}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                activeTab === 'archive'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/25'
+                  : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50'
+              }`}
+            >
+              Archive ({archive.length})
+            </button>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-4 mb-6">
+            <button
+              onClick={() => onReportItem('lost')}
+              className="px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/25 card-hover"
+            >
+              Report Lost Item
+            </button>
+            <button
+              onClick={() => onReportItem('found')}
+              className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/25 card-hover"
+            >
+              Report Found Item
+            </button>
+            <button
+              onClick={() => setShowSearchResults(true)}
+              className="px-6 py-3 border-2 border-blue-400 text-blue-300 font-semibold rounded-xl hover:bg-blue-400/10 hover:border-blue-300 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25 card-hover"
+            >
+              Browse All Items
+            </button>
+          </div>
+
+          {/* Tab Content */}
+          <div className="min-h-[400px]">
+            {activeTab === 'lost' && (
+              <div>
+                <h3 className="text-xl font-bold text-white mb-4 professional-text-shadow">Lost Items</h3>
+                <LostList items={lostItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} />
+              </div>
+            )}
+            {activeTab === 'found' && (
+              <div>
+                <h3 className="text-xl font-bold text-white mb-4 professional-text-shadow">Found Items</h3>
+                <FoundList items={foundItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} />
+              </div>
+            )}
+            {activeTab === 'archive' && (
+              <div>
+                <h3 className="text-xl font-bold text-white mb-4 professional-text-shadow">Archived Items</h3>
+                <ArchiveList items={archive} />
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Featured Items Section */}
-      <FeaturedItems />
+      {/* Search Results Modal */}
+      {showSearchResults && (
+        <SearchResults 
+          query={query} 
+          onClose={() => setShowSearchResults(false)} 
+        />
+      )}
     </div>
   )
 }

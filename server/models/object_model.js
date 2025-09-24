@@ -15,7 +15,7 @@ const objectSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: true
+        default: ''
     },
     type: {
         type: String,
@@ -33,7 +33,7 @@ const objectSchema = new mongoose.Schema({
     },
     date: {
         type: Date,
-        required: true
+        default: Date.now
     }
 }, {
     timestamps: true

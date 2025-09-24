@@ -34,6 +34,16 @@ export const deleteObject = async (id) => {
   await api.delete(`/objects/${id}`)
 }
 
+export const searchObjects = async (params = {}) => {
+  const res = await api.get('/objects/search', { params })
+  return res.data
+}
+
+export const getSmartMatches = async (params = {}) => {
+  const res = await api.get('/objects/smart-matches', { params })
+  return res.data
+}
+
 export default {
   createObject,
   getMyObjects,
@@ -41,7 +51,9 @@ export default {
   getObjectMatches,
   updateObject,
   updateObjectStatus,
-  deleteObject
+  deleteObject,
+  searchObjects,
+  getSmartMatches
 }
 
 

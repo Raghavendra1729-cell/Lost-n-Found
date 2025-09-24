@@ -37,7 +37,6 @@ const UserProfile = () => {
       window.location.href = '/'
     } catch (err) {
       console.error('Logout error:', err)
-      alert('Logout failed. Please try again.')
     }
   }
 

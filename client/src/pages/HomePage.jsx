@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import { getUserProfile, logoutUser, handleGoogleCallback, updatePhone } from '../api/auth_api'
-import { AnimatedBackground, Navigation, Dashboard, LandingPage, SearchModal, ReportModal } from '../components'
+import AnimatedBackground from '../components/ui/AnimatedBackground'
+import Navigation from '../components/layout/Navigation'
+import Dashboard from '../components/dashboard/Dashboard'
+import LandingPage from '../components/common/LandingPage'
+import ReportModal from '../components/modals/ReportModal'
 import { createObject } from '../api/object_api'
-import { PhoneModal } from '../components/modals'
+import { PhoneModal, SmartMatchesModal } from '../components/modals'
 import '../components/ui/Animations.css'
 
 const HomePage = () => {
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [searchType, setSearchType] = useState('items') // 'items' or 'places'
-  const [searchDate, setSearchDate] = useState('')
-  const [showSearchModal, setShowSearchModal] = useState(false)
   const [showReportModal, setShowReportModal] = useState(false)
   const [reportType, setReportType] = useState('lost') // 'lost' or 'found'
   const [showPhoneModal, setShowPhoneModal] = useState(false)
+  const [showSmartMatches, setShowSmartMatches] = useState(false)
+  const [submittedItem, setSubmittedItem] = useState(null)
 
   useEffect(() => {
     // Handle Google OAuth callback first
@@ -26,6 +28,15 @@ const HomePage = () => {
     // Then check user authentication
     checkUserAuth()
   }, [])
+
+  // Check if user needs phone number after authentication
+  useEffect(() => {
+    if (user && (!user.phone || user.phone.trim().length === 0)) {
+      setShowPhoneModal(true)
+    } else if (user && user.phone && user.phone.trim().length > 0) {
+      setShowPhoneModal(false)
+    }
+  }, [user])
 
   // Redirect logged-in users to dashboard
   useEffect(() => {
@@ -56,19 +67,13 @@ const HomePage = () => {
       console.log('🔄 Logging out user...')
       await logoutUser()
       setUser(null)
-      alert('Logged out successfully!')
+      // Logged out successfully
     } catch (error) {
       console.error('❌ Logout failed:', error)
-      alert('Logout failed. Please try again.')
+      // Logout failed
     }
   }
 
-  const handleSearch = (e) => {
-    e.preventDefault()
-    console.log('Searching for:', { searchQuery, searchType, searchDate })
-    // TODO: Implement search functionality
-    setShowSearchModal(false)
-  }
 
   const handleReportItem = (type) => {
     setReportType(type)
@@ -85,9 +90,11 @@ const HomePage = () => {
       }
       await createObject(data)
       setShowReportModal(false)
+      setSubmittedItem(payload)
+      setShowSmartMatches(true)
       setRefreshKey((k) => k + 1)
     } catch (error) {
-      alert(error.response?.data?.message || 'Failed to create object')
+      console.error('Failed to create object:', error.response?.data?.message || error.message)
     }
   }
 
@@ -105,27 +112,14 @@ const HomePage = () => {
           <Dashboard 
             user={user} 
             onReportItem={handleReportItem} 
-            onSearch={() => setShowSearchModal(true)} 
             key={refreshKey}
           />
         ) : (
-          <LandingPage onSearch={() => setShowSearchModal(true)} />
+          <LandingPage />
         )}
       </div>
 
       {/* Modals */}
-      <SearchModal
-        isOpen={showSearchModal}
-        onClose={() => setShowSearchModal(false)}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        searchType={searchType}
-        setSearchType={setSearchType}
-        searchDate={searchDate}
-        setSearchDate={setSearchDate}
-        onSearch={handleSearch}
-      />
-
       <ReportModal
         isOpen={showReportModal}
         onClose={() => setShowReportModal(false)}
@@ -140,11 +134,18 @@ const HomePage = () => {
           try {
             await updatePhone(phone)
             setShowPhoneModal(false)
-            await checkUserAuth()
-          } catch (e) {
-            alert('Failed to save phone. Please try again.')
+            await checkUserAuth() // Refresh user data to get updated phone
+          } catch (error) {
+            // Re-throw error so PhoneModal can handle it
+            throw error
           }
         }}
+      />
+
+      <SmartMatchesModal
+        isOpen={showSmartMatches}
+        onClose={() => setShowSmartMatches(false)}
+        itemData={submittedItem}
       />
 
       {/* Footer */}
