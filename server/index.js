@@ -1,11 +1,12 @@
 import express from 'express'
-import connectDB from './config/conifg.js'
+import connectDB from './config/config.js'
 import 'dotenv/config'
 import cors from 'cors'
 import session from 'express-session'
 import passport from './config/passport.js'
 import authRoutes from './routes/auth_routes.js'
 import objectRoutes from './routes/object_routes.js'
+import imageRoutes from './routes/image_routes.js'
 import cookieParser from 'cookie-parser'
 
 //initialize express app
@@ -39,6 +40,7 @@ app.use(passport.session())
 //routes
 app.use('/api/auth', authRoutes)
 app.use('/api/objects', objectRoutes)
+app.use('/api/images', imageRoutes)
 
 
 

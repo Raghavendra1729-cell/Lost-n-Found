@@ -2,7 +2,7 @@ import Object from '../models/object_model.js'
 
 export const createObject = async (req, res) => {
     try {
-        const { name, description, image, type, location, date } = req.body
+        const { name, description, imageData, type, location, date } = req.body
         
         // Validate required fields
         if (!name || !type || !location) {
@@ -17,7 +17,14 @@ export const createObject = async (req, res) => {
             userId: req.user._id,
             name: name.trim(),
             description: description ? description.trim() : 'No description provided',
-            image: image ? image.trim() : 'https://via.placeholder.com/300x200?text=No+Image',
+            image: imageData || {
+                url: '',
+                publicId: '',
+                width: null,
+                height: null,
+                format: '',
+                size: null
+            },
             type,
             location: location.trim(),
             date: date ? new Date(date) : new Date()
@@ -318,7 +325,7 @@ export const getSmartMatches = async (req, res) => {
         scoredMatches.sort((a, b) => b.similarityScore - a.similarityScore)
         
         return res.json({
-            matches: scoredMatches.filter(match => match.similarityScore > 20), // Only show matches with >20% similarity
+            matches: scoredMatches.filter(match => match.similarityScore >= 80), // Only show matches with >=80% similarity
             totalFound: matches.length
         })
     } catch (error) {

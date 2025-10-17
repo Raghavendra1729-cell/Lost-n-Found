@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { searchObjects } from '../../api/object_api'
+import { getImageUrl } from '../../utils/imageUtils'
 
 const SearchResults = ({ query, onClose }) => {
   const [results, setResults] = useState([])
@@ -87,7 +88,7 @@ const SearchResults = ({ query, onClose }) => {
                 <div key={item._id} className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50 professional-bg">
                   <div className="flex gap-4">
                     <img 
-                      src={item.image} 
+                      src={getImageUrl(item.image)} 
                       alt={item.name} 
                       className="w-20 h-20 object-cover rounded-lg" 
                     />

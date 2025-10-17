@@ -1,4 +1,5 @@
 import React from 'react'
+import { getImageUrl } from '../../utils/imageUtils'
 
 const LostList = ({ items, onMatches, onArchive, onDelete, matches }) => {
   return (
@@ -6,7 +7,7 @@ const LostList = ({ items, onMatches, onArchive, onDelete, matches }) => {
       {items.map((it) => (
         <div key={it._id} className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50 professional-bg">
           <div className="flex gap-4">
-            <img src={it.image} alt={it.name} className="w-20 h-20 object-cover rounded-lg" />
+            <img src={getImageUrl(it.image)} alt={it.name} className="w-20 h-20 object-cover rounded-lg" />
             <div className="flex-1">
               <div className="font-semibold text-white text-lg">{it.name}</div>
               <div className="text-gray-400 text-sm">{it.location} — {new Date(it.date).toLocaleDateString()}</div>
@@ -41,7 +42,7 @@ const LostList = ({ items, onMatches, onArchive, onDelete, matches }) => {
               <div className="space-y-3">
                 {matches[it._id].map((m) => (
                   <div key={m._id} className="flex gap-3 p-3 bg-gray-800/50 rounded-lg border border-gray-600/30">
-                    <img src={m.image} alt={m.name} className="w-12 h-12 object-cover rounded-lg" />
+                    <img src={getImageUrl(m.image)} alt={m.name} className="w-12 h-12 object-cover rounded-lg" />
                     <div className="flex-1">
                       <div className="font-medium text-sm text-white">{m.name}</div>
                       <div className="text-xs text-gray-400">{m.location} — {new Date(m.date).toLocaleDateString()}</div>

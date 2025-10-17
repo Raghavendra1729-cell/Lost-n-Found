@@ -14,8 +14,30 @@ const objectSchema = new mongoose.Schema({
         type: String,
     },
     image: {
-        type: String,
-        default: ''
+        url: {
+            type: String,
+            default: ''
+        },
+        publicId: {
+            type: String,
+            default: ''
+        },
+        width: {
+            type: Number,
+            default: null
+        },
+        height: {
+            type: Number,
+            default: null
+        },
+        format: {
+            type: String,
+            default: ''
+        },
+        size: {
+            type: Number,
+            default: null
+        }
     },
     type: {
         type: String,

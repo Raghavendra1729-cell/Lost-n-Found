@@ -1,4 +1,5 @@
 import React from 'react'
+import { getImageUrl } from '../../utils/imageUtils'
 
 const ArchiveList = ({ items }) => {
   return (
@@ -6,7 +7,7 @@ const ArchiveList = ({ items }) => {
       {items.map((it) => (
         <div key={it._id} className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50 professional-bg">
           <div className="flex gap-4">
-            <img src={it.image} alt={it.name} className="w-20 h-20 object-cover rounded-lg" />
+            <img src={getImageUrl(it.image)} alt={it.name} className="w-20 h-20 object-cover rounded-lg" />
             <div className="flex-1">
               <div className="font-semibold text-white text-lg">{it.name}</div>
               <div className="text-gray-400 text-sm capitalize">{it.type} — {it.location} — {new Date(it.date).toLocaleDateString()}</div>

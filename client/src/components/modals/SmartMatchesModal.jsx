@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { getSmartMatches } from '../../api/object_api'
+import { getImageUrl } from '../../utils/imageUtils'
 
 const SmartMatchesModal = ({ isOpen, onClose, itemData }) => {
   const [matches, setMatches] = useState([])
@@ -89,7 +90,7 @@ const SmartMatchesModal = ({ isOpen, onClose, itemData }) => {
                 <div key={match._id} className="bg-gray-800/30 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50 professional-bg">
                   <div className="flex gap-4">
                     <img 
-                      src={match.image} 
+                      src={getImageUrl(match.image)} 
                       alt={match.name} 
                       className="w-20 h-20 object-cover rounded-lg" 
                     />

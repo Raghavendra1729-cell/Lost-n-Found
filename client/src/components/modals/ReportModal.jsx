@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { getSmartMatches } from '../../api/object_api'
+import ImageUpload from '../common/ImageUpload'
 
 const ReportModal = ({ 
   isOpen, 
@@ -11,7 +12,7 @@ const ReportModal = ({
   const [description, setDescription] = useState('')
   const [location, setLocation] = useState('')
   const [date, setDate] = useState('')
-  const [image, setImage] = useState('')
+  const [imageData, setImageData] = useState(null)
   const [matches, setMatches] = useState([])
   const [isCheckingMatches, setIsCheckingMatches] = useState(false)
   const [errors, setErrors] = useState({})
@@ -23,7 +24,7 @@ const ReportModal = ({
       setDescription('')
       setLocation('')
       setDate('')
-      setImage('')
+      setImageData(null)
       setMatches([])
       setErrors({})
       setIsCheckingMatches(false)
@@ -86,7 +87,7 @@ const ReportModal = ({
       description: description.trim(),
       location: location.trim(),
       date,
-      image,
+      imageData,
       type: reportType
     })
   }
@@ -249,18 +250,11 @@ const ReportModal = ({
             </div>
           </div>
 
-          <div>
-            <label className="block text-gray-300 font-medium mb-2">
-              Image URL <span className="text-gray-500 text-sm ml-2">(Optional)</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Paste an image URL (optional)"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className="w-full px-6 py-4 bg-gray-800/50 border border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white placeholder-gray-400 transition-all duration-300 professional-border"
-            />
-          </div>
+          <ImageUpload
+            onImageSelect={setImageData}
+            onImageRemove={() => setImageData(null)}
+            initialImage={imageData}
+          />
           
           <div>
             <label className="block text-gray-300 font-medium mb-2">

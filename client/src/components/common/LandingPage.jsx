@@ -145,9 +145,20 @@ const LandingPage = () => {
       {/* Search Results */}
       {showResults && (
         <div className="bg-gray-800/40 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50 professional-bg mb-12">
-          <h3 className="text-2xl font-bold text-white mb-6 professional-text professional-text-shadow">
-            Search Results ({searchResults.length} items found)
-          </h3>
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-2xl font-bold text-white professional-text professional-text-shadow">
+              Search Results ({searchResults.length} items found)
+            </h3>
+            <button
+              onClick={() => setShowResults(false)}
+              className="text-gray-400 hover:text-white transition-colors duration-300 p-2 hover:bg-gray-700/50 rounded-lg"
+              title="Close results"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
           {searchResults.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {searchResults.slice(0, 6).map((item, index) => (
