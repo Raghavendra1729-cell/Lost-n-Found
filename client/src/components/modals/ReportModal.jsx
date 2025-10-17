@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { getSmartMatches } from '../../api/object_api'
 import ImageUpload from '../common/ImageUpload'
 
 const ReportModal = ({ 
@@ -13,8 +12,6 @@ const ReportModal = ({
   const [location, setLocation] = useState('')
   const [date, setDate] = useState('')
   const [imageData, setImageData] = useState(null)
-  const [matches, setMatches] = useState([])
-  const [isCheckingMatches, setIsCheckingMatches] = useState(false)
   const [errors, setErrors] = useState({})
 
   // Reset form when modal closes
@@ -25,40 +22,12 @@ const ReportModal = ({
       setLocation('')
       setDate('')
       setImageData(null)
-      setMatches([])
       setErrors({})
-      setIsCheckingMatches(false)
     }
   }, [isOpen])
 
-  // Check for matches when form data changes
-  useEffect(() => {
-    const checkMatches = async () => {
-      if (!name.trim() || !location.trim()) {
-        setMatches([])
-        return
-      }
-
-      setIsCheckingMatches(true)
-      try {
-        const response = await getSmartMatches({
-          name,
-          description,
-          location,
-          type: reportType
-        })
-        setMatches(response.matches || [])
-      } catch (error) {
-        console.error('Failed to check matches:', error)
-        setMatches([])
-      } finally {
-        setIsCheckingMatches(false)
-      }
-    }
-
-    const timeoutId = setTimeout(checkMatches, 1000) // Debounce
-    return () => clearTimeout(timeoutId)
-  }, [name, description, location, reportType])
+  // Remove live matches checking during form filling
+  // Matches will be shown after form submission in SmartMatchesModal
 
   const validateForm = () => {
     const newErrors = {}
@@ -102,7 +71,7 @@ const ReportModal = ({
             <h2 className="text-3xl font-bold text-white professional-text professional-text-shadow">
               Report {reportType === 'lost' ? 'Lost' : 'Found'} Item
             </h2>
-            <p className="text-gray-400 mt-2">Smart matching will find potential matches as you type</p>
+            <p className="text-gray-400 mt-2">Fill in the details and we'll find potential matches after submission</p>
           </div>
           <button 
             onClick={onClose}
@@ -112,58 +81,7 @@ const ReportModal = ({
           </button>
         </div>
 
-        {/* Live Matches Section */}
-        {(matches.length > 0 || isCheckingMatches) && (
-          <div className="mb-8 p-6 bg-gray-800/50 rounded-xl border border-gray-600/50 professional-border">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-white professional-text professional-text-shadow">
-                🎯 Potential Matches Found
-              </h3>
-              {isCheckingMatches && (
-                <div className="flex items-center space-x-2 text-blue-400">
-                  <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
-                  <span className="text-sm">Searching...</span>
-                </div>
-              )}
-            </div>
-            
-            {matches.length > 0 && (
-              <div className="grid gap-4">
-                {matches.slice(0, 3).map((match, index) => (
-                  <div key={match._id} className="bg-gray-900/50 rounded-lg p-4 border border-gray-600/30 hover:border-blue-400/50 transition-all duration-300">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        match.type === 'lost' 
-                          ? 'bg-red-500/20 text-red-300 border border-red-400/50' 
-                          : 'bg-green-500/20 text-green-300 border border-green-400/50'
-                      }`}>
-                        {match.type.toUpperCase()}
-                      </span>
-                      <span className="text-blue-400 text-sm font-bold">
-                        {match.similarityScore}% match
-                      </span>
-                    </div>
-                    <h4 className="text-white font-semibold mb-1">{match.name}</h4>
-                    {match.description && (
-                      <p className="text-gray-300 text-sm mb-2">{match.description}</p>
-                    )}
-                    <div className="flex items-center justify-between">
-                      <p className="text-cyan-400 text-sm">📍 {match.location}</p>
-                      <p className="text-gray-500 text-xs">
-                        Posted by: {match.userId?.name || 'Anonymous'}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-                {matches.length > 3 && (
-                  <p className="text-gray-400 text-sm text-center">
-                    ... and {matches.length - 3} more matches
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+        {/* Matches will be shown after form submission */}
         
         {Object.keys(errors).length > 0 && (
           <div className="mb-6 p-4 bg-red-900/30 border border-red-600/50 rounded-xl">

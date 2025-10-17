@@ -6,7 +6,8 @@ import Dashboard from '../components/dashboard/Dashboard'
 import LandingPage from '../components/common/LandingPage'
 import ReportModal from '../components/modals/ReportModal'
 import { createObject } from '../api/object_api'
-import { PhoneModal, SmartMatchesModal } from '../components/modals'
+import { PhoneModal, SmartMatchesModal, ChatModal } from '../components/modals'
+import ChatSection from '../components/chat/ChatSection'
 import '../components/ui/Animations.css'
 
 const HomePage = () => {
@@ -17,6 +18,9 @@ const HomePage = () => {
   const [showPhoneModal, setShowPhoneModal] = useState(false)
   const [showSmartMatches, setShowSmartMatches] = useState(false)
   const [submittedItem, setSubmittedItem] = useState(null)
+  const [showChat, setShowChat] = useState(false)
+  const [currentChat, setCurrentChat] = useState(null)
+  const [showChatSection, setShowChatSection] = useState(false)
 
   useEffect(() => {
     // Handle Google OAuth callback first
@@ -98,13 +102,22 @@ const HomePage = () => {
     }
   }
 
+  const handleOpenChat = (chat, currentUser) => {
+    setCurrentChat(chat)
+    setShowChat(true)
+  }
+
+  const handleChatClick = () => {
+    setShowChatSection(true)
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
       {/* Animated Background */}
       <AnimatedBackground />
 
       {/* Navigation */}
-      <Navigation user={user} handleLogout={handleLogout} />
+      <Navigation user={user} handleLogout={handleLogout} onChatClick={handleChatClick} />
 
       {/* Main Content */}
       <div className="relative z-10 py-20 px-4">
@@ -146,6 +159,21 @@ const HomePage = () => {
         isOpen={showSmartMatches}
         onClose={() => setShowSmartMatches(false)}
         itemData={submittedItem}
+        currentUser={user}
+        onOpenChat={handleOpenChat}
+      />
+
+      <ChatModal
+        isOpen={showChat}
+        onClose={() => setShowChat(false)}
+        chat={currentChat}
+        currentUser={user}
+      />
+
+      <ChatSection
+        isOpen={showChatSection}
+        onClose={() => setShowChatSection(false)}
+        currentUser={user}
       />
 
       {/* Footer */}

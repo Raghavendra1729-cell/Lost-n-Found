@@ -141,4 +141,29 @@ export const getImageUrl = (req, res) => {
   }
 }
 
+// Generate placeholder image
+export const getPlaceholderImage = async (req, res) => {
+  try {
+    const { size } = req.params // e.g., "300x200"
+    const [width, height] = size.split('x').map(Number)
+    
+    // Create a simple SVG placeholder
+    const svg = `
+      <svg width="${width || 300}" height="${height || 200}" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" fill="#374151"/>
+        <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="16" fill="#9CA3AF" text-anchor="middle" dy=".3em">
+          No Image
+        </text>
+      </svg>
+    `
+    
+    res.setHeader('Content-Type', 'image/svg+xml')
+    res.setHeader('Cache-Control', 'public, max-age=31536000')
+    res.send(svg)
+  } catch (error) {
+    console.error('Error generating placeholder:', error)
+    res.status(500).json({ message: 'Failed to generate placeholder' })
+  }
+}
+
 export { upload }

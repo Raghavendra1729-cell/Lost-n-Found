@@ -86,6 +86,24 @@ export const getMyObjects = async (req, res) => {
     }
 }
 
+export const getAllObjects = async (req, res) => {
+    try {
+        const { type, status } = req.query
+        let query = {}
+        if (type) query.type = type
+        if (status) query.status = status
+        
+        const objects = await Object.find(query)
+            .populate('userId', 'name email phone')
+            .sort({ createdAt: -1 })
+        
+        return res.json({ objects })
+    } catch (error) {
+        console.error('Error fetching all objects:', error)
+        return res.status(500).json({ message: 'Failed to fetch objects' })
+    }
+}
+
 export const getMyArchive = async (req, res) => {
     try {
         const results = await Object.find({ userId: req.user._id, status: 'resolved' })

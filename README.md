@@ -1,141 +1,140 @@
-# 🎯 Lost & Found App
+# 🎯 SST Lost & Found App
 
-A simple web app to help you find lost items and return found items to their owners.
+A modern web application for reporting and finding lost items with real-time chat functionality.
 
-## 📱 How to Use the App
+## 🚀 How to Use the App
 
-### **Step 1: Get Started**
-1. **Visit the website** - You'll see the landing page
-2. **Click "Get Started"** - Create your account
-3. **Sign up with email** or **Google account**
-4. **Add your phone number** when asked (required for contact)
+### 👤 **For New Users**
+1. **Register** - Create an account with your email and password
+2. **Login** - Access your dashboard
+3. **Add Phone** - Complete your profile with a phone number
 
-### **Step 2: Search for Items**
-- **Type what you're looking for** in the search box
-- **Enter the location** where you lost/found it
-- **Click "Search"** to see all matching items
-- **Click ❌ to close** search results
+### 📱 **Main Features**
 
-### **Step 3: Report Lost/Found Items**
-1. **Click "Report Lost Item"** or **"Report Found Item"**
-2. **Fill the form:**
-   - **Item Name** (required) - e.g., "iPhone", "Black Wallet"
-   - **Location** (required) - where you lost/found it
-   - **Description** (optional) - extra details
-   - **Image** (optional) - drag & drop a photo
-3. **Click "Submit"**
+#### 🔍 **Search for Items**
+- Use the **Search Engine** on the landing page
+- Search by item name, location, or description
+- View all available lost and found items
 
-### **Step 4: View Matches**
-- After submitting, you'll see **potential matches** (80%+ similarity)
-- **Click "Contact Owner"** to get their contact info
-- **Contact info is copied** to your clipboard automatically
+#### 📝 **Report Lost/Found Items**
+1. Click **"Report Lost Item"** or **"Report Found Item"**
+2. Fill in the required details:
+   - **Item Name** (required)
+   - **Location** (required)
+   - **Description** (optional)
+   - **Date** (optional)
+   - **Upload Image** (optional)
+3. Submit to save your report
 
-### **Step 5: Manage Your Items**
-- **Lost Items Tab** - See items you reported as lost
-- **Found Items Tab** - See items you reported as found
-- **Archive Tab** - See completed items
-- **Search All Items** - Search everyone's items globally
+#### 💬 **Chat About Items**
+1. Click the **Chat icon** in the navigation
+2. Select any item from the list
+3. Join the discussion about that item
+4. Send messages in real-time
+5. Messages are saved and visible to all users
 
-## 🔐 Authentication Explained
+#### 🎯 **Smart Matching**
+- After reporting an item, the system shows potential matches
+- View items with high similarity scores
+- Contact item owners or start a chat
 
-### **Registration Options:**
-1. **Manual Registration:**
-   - Enter email and password
-   - Confirm password
-   - Click "Register"
+#### 👤 **Manage Your Items**
+- View your **Lost Items**
+- View your **Found Items** 
+- Check your **Archive** (resolved items)
+- Edit or update item status
 
-2. **Google OAuth:**
-   - Click "Sign in with Google"
-   - Choose your Google account
-   - **Phone number required** - Enter your mobile number
-   - Phone number is used for contact when others find your items
+### 🎨 **Navigation**
+- **Home** - Main dashboard
+- **Chat** - Item discussions
+- **Profile** - Account settings
+- **Logout** - Sign out
 
-### **Login:**
-- Use your email/password or Google account
-- You'll go to your personal dashboard
+### 📊 **Dashboard Tabs**
+- **Lost Items** - Items you've reported as lost
+- **Found Items** - Items you've reported as found
+- **Archive** - Items that have been resolved
 
-### **Why Phone Number?**
-- When someone finds your lost item, they need to contact you
-- Phone number ensures you can be reached
-- Required for all accounts (Google or manual)
+## 🛠️ **For Developers**
 
-## 🎯 Key Features
-
-### **Smart Matching:**
-- Automatically finds similar items (80%+ match)
-- Compares names, descriptions, and locations
-- Shows match percentage for each result
-
-### **Image Upload:**
-- Drag & drop photos of your items
-- JPEG images only (under 5MB)
-- Automatic image optimization
-
-### **Global Search:**
-- Search ALL users' items, not just yours
-- Find items from other people
-- Contact owners directly
-
-### **Contact System:**
-- Click "Contact Owner" to get their info
-- Contact details copied to clipboard
-- No need to write down information
-
-## 🚀 Quick Start Guide
-
-1. **Create Account** → Sign up or use Google
-2. **Add Phone Number** → Required for contact
-3. **Search Items** → Look for your lost items
-4. **Report Items** → Report lost/found items
-5. **Check Matches** → See potential matches
-6. **Contact Owners** → Get in touch with people
-
----
-
-## 🛠️ For Developers
-
-### **Tech Stack:**
-- **Frontend:** React 19, Tailwind CSS, Vite
-- **Backend:** Node.js, Express, MongoDB
-- **Authentication:** JWT, Passport.js, Google OAuth
-- **Images:** Cloudinary
-- **Database:** MongoDB Atlas
-
-### **Installation:**
-
-1. **Clone repository**
-2. **Install dependencies:**
-   ```bash
-   cd server && npm install
-   cd ../client && npm install
-   ```
-3. **Set up environment variables** in `server/.env`
-4. **Run the app:**
-   ```bash
-   # Terminal 1 - Backend
-   cd server && npm run dev
-   
-   # Terminal 2 - Frontend  
-   cd client && npm run dev
-   ```
-5. **Access:** Frontend (http://localhost:5173), Backend (http://localhost:3000)
-
-### **Environment Variables:**
-```env
-PORT=3000
-JWT_SECRET=your_jwt_secret
-MONGO_URL=your_mongodb_connection
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-CLOUDINARY_CLOUD_NAME=your_cloudinary_name
-CLOUDINARY_API_KEY=your_cloudinary_key
-CLOUDINARY_API_SECRET=your_cloudinary_secret
+### 📁 **Project Structure**
+```
+├── client/                 # Frontend React app
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   │   ├── chat/       # Chat functionality
+│   │   │   ├── dashboard/  # Dashboard components
+│   │   │   ├── modals/     # Modal dialogs
+│   │   │   ├── objects/    # Item display components
+│   │   │   └── ui/         # UI components & animations
+│   │   ├── pages/          # Main pages
+│   │   ├── api/            # API calls
+│   │   └── contexts/       # React contexts
+│   └── package.json
+├── server/                 # Backend Node.js app
+│   ├── controllers/        # API controllers
+│   ├── models/            # Database models
+│   ├── routes/            # API routes
+│   ├── config/            # Configuration files
+│   └── package.json
+└── README.md
 ```
 
-## 📄 License
+### 🚀 **Quick Start**
 
-ISC License
+1. **Clone the repository**
+2. **Install dependencies**:
+   ```bash
+   # Backend
+   cd server
+   npm install
+   
+   # Frontend  
+   cd ../client
+   npm install
+   ```
 
-## 👨‍💻 Author
+3. **Set up environment variables**:
+   - Copy `.env.example` to `.env` in the server folder
+   - Add your MongoDB connection string
+   - Add JWT secret and other required variables
 
-**Linga Seetha Rama Raghavendra**
+4. **Start the applications**:
+   ```bash
+   # Start backend (port 3000)
+   cd server
+   npm run dev
+   
+   # Start frontend (port 5173)
+   cd client
+   npm run dev
+   ```
+
+5. **Open your browser** and go to `http://localhost:5173`
+
+### 🗄️ **Database Models**
+- **User** - User accounts and profiles
+- **Object** - Lost and found items
+- **ItemMessage** - Chat messages for items
+- **Chat** - User-to-user conversations
+
+### 🔌 **API Endpoints**
+- **Authentication**: `/api/auth/*`
+- **Objects**: `/api/objects/*`
+- **Images**: `/api/images/*`
+- **Chat**: `/api/chat/*`
+- **Item Chat**: `/api/item-chat/*`
+
+### 🎨 **Technologies Used**
+- **Frontend**: React, Tailwind CSS, Socket.IO
+- **Backend**: Node.js, Express, Socket.IO
+- **Database**: MongoDB with Mongoose
+- **Authentication**: JWT with Google OAuth
+- **Image Storage**: Cloudinary
+- **Real-time**: WebSocket connections
+
+## 📞 **Support**
+For issues or questions, please check the console logs or contact the development team.
+
+---
+*Built with ❤️ for the SST community*

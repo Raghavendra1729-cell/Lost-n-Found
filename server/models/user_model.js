@@ -80,7 +80,7 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
 }
 
 
-userSchema.index({ email: 1 })
+// Email index is already created by unique: true, no need for explicit index
 
 const User = mongoose.model('User', userSchema)
 

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { getSmartMatches } from '../../api/object_api'
 import { getImageUrl } from '../../utils/imageUtils'
+import { getOrCreateChat } from '../../api/chat_api'
 
-const SmartMatchesModal = ({ isOpen, onClose, itemData }) => {
+const SmartMatchesModal = ({ isOpen, onClose, itemData, currentUser, onOpenChat }) => {
   const [matches, setMatches] = useState([])
   const [loading, setLoading] = useState(false)
 
@@ -38,6 +39,17 @@ const SmartMatchesModal = ({ isOpen, onClose, itemData }) => {
     }).catch(() => {
       console.log('Contact info:', contactInfo)
     })
+  }
+
+  const handleStartChat = async (match) => {
+    try {
+      const response = await getOrCreateChat(match.userId._id, itemData?._id)
+      if (onOpenChat && currentUser) {
+        onOpenChat(response.chat, currentUser)
+      }
+    } catch (error) {
+      console.error('Error starting chat:', error)
+    }
   }
 
   if (!isOpen) return null
@@ -129,9 +141,10 @@ const SmartMatchesModal = ({ isOpen, onClose, itemData }) => {
                           Contact Owner
                         </button>
                         <button
-                          className="px-4 py-2 border border-gray-600 text-gray-300 text-sm font-medium rounded-lg hover:border-gray-500 hover:text-white transition-all duration-300"
+                          onClick={() => handleStartChat(match)}
+                          className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25 card-hover"
                         >
-                          View Details
+                          💬 Chat
                         </button>
                       </div>
                     </div>

@@ -44,9 +44,20 @@ export const getSmartMatches = async (params = {}) => {
   return res.data
 }
 
+export const getAllObjects = async () => {
+  try {
+    const response = await api.get('/objects/all')
+    return response.data
+  } catch (error) {
+    console.error('Failed to fetch all objects:', error)
+    throw error
+  }
+}
+
 export default {
   createObject,
   getMyObjects,
+  getAllObjects,
   getMyArchive,
   getObjectMatches,
   updateObject,
