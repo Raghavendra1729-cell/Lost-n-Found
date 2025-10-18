@@ -149,7 +149,10 @@ export const getObjectMatches = async (req, res) => {
             matchQuery.$or = [ { name: regex }, { description: regex } ]
         }
 
-        const matches = await Object.find(matchQuery).sort({ createdAt: -1 }).limit(50)
+        const matches = await Object.find(matchQuery)
+            .populate('userId', 'name email')
+            .sort({ createdAt: -1 })
+            .limit(50)
         return res.json({ object: obj, matches })
     } catch (error) {
         return res.status(500).json({ message: 'Failed to find matches' })

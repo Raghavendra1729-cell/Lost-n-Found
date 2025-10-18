@@ -36,8 +36,32 @@ export const getChatMessages = async (chatId) => {
   }
 }
 
+// Resolve chat and mark related item as resolved
+export const resolveChat = async (chatId) => {
+  try {
+    const response = await api.post(`/chat/${chatId}/resolve`)
+    return response.data
+  } catch (error) {
+    console.error('Resolve chat error:', error)
+    throw error
+  }
+}
+
+// Archive chat
+export const archiveChat = async (chatId) => {
+  try {
+    const response = await api.post(`/chat/${chatId}/archive`)
+    return response.data
+  } catch (error) {
+    console.error('Archive chat error:', error)
+    throw error
+  }
+}
+
 export default {
   getOrCreateChat,
   getUserChats,
-  getChatMessages
+  getChatMessages,
+  resolveChat,
+  archiveChat
 }

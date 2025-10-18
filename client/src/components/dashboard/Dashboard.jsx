@@ -28,6 +28,11 @@ const Dashboard = ({ user, onReportItem }) => {
     setMatches((prev) => ({ ...prev, [id]: m }))
   }
 
+  const handleResolve = async (id) => {
+    await updateObjectStatus(id, 'resolved')
+    await refresh()
+  }
+
   const handleArchive = async (id) => {
     await updateObjectStatus(id, 'resolved')
     await refresh()
@@ -139,13 +144,13 @@ const Dashboard = ({ user, onReportItem }) => {
             {activeTab === 'lost' && (
               <div>
                 <h3 className="text-xl font-bold text-white mb-4 professional-text-shadow">Lost Items</h3>
-                <LostList items={lostItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} />
+                <LostList items={lostItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} currentUser={user} onResolve={handleResolve} />
               </div>
             )}
             {activeTab === 'found' && (
               <div>
                 <h3 className="text-xl font-bold text-white mb-4 professional-text-shadow">Found Items</h3>
-                <FoundList items={foundItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} />
+                <FoundList items={foundItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} currentUser={user} onResolve={handleResolve} />
               </div>
             )}
             {activeTab === 'archive' && (

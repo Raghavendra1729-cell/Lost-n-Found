@@ -3,3 +3,5 @@ export { default as ReportModal } from './ReportModal';
 export { default as PhoneModal } from './PhoneModal';
 export { default as SmartMatchesModal } from './SmartMatchesModal';
 export { default as ChatModal } from './ChatModal';
+export { default as ContactModal } from './ContactModal';
+export { default as ConfirmationModal } from './ConfirmationModal';

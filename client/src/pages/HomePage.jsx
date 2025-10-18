@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { getUserProfile, logoutUser, handleGoogleCallback, updatePhone } from '../api/auth_api'
 import AnimatedBackground from '../components/ui/AnimatedBackground'
+import NotificationBar from '../components/ui/NotificationBar'
+import GlobalChatListener from '../components/GlobalChatListener'
 import Navigation from '../components/layout/Navigation'
 import Dashboard from '../components/dashboard/Dashboard'
 import LandingPage from '../components/common/LandingPage'
 import ReportModal from '../components/modals/ReportModal'
 import { createObject } from '../api/object_api'
 import { PhoneModal, SmartMatchesModal, ChatModal } from '../components/modals'
-import ChatSection from '../components/chat/ChatSection'
+import { NotificationProvider } from '../contexts/NotificationContext'
 import '../components/ui/Animations.css'
 
 const HomePage = () => {
@@ -20,7 +22,6 @@ const HomePage = () => {
   const [submittedItem, setSubmittedItem] = useState(null)
   const [showChat, setShowChat] = useState(false)
   const [currentChat, setCurrentChat] = useState(null)
-  const [showChatSection, setShowChatSection] = useState(false)
 
   useEffect(() => {
     // Handle Google OAuth callback first
@@ -107,80 +108,78 @@ const HomePage = () => {
     setShowChat(true)
   }
 
-  const handleChatClick = () => {
-    setShowChatSection(true)
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
-      {/* Animated Background */}
-      <AnimatedBackground />
+    <NotificationProvider>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
+        {/* Animated Background */}
+        <AnimatedBackground />
 
-      {/* Navigation */}
-      <Navigation user={user} handleLogout={handleLogout} onChatClick={handleChatClick} />
+        {/* Global Chat Listener */}
+        <GlobalChatListener />
 
-      {/* Main Content */}
-      <div className="relative z-10 py-20 px-4">
-        {user ? (
-          <Dashboard 
-            user={user} 
-            onReportItem={handleReportItem} 
-            key={refreshKey}
-          />
-        ) : (
-          <LandingPage />
-        )}
+        {/* Notification Bar */}
+        <NotificationBar />
+
+        {/* Navigation */}
+        <Navigation user={user} handleLogout={handleLogout} />
+
+        {/* Main Content */}
+        <div className="relative z-10 py-20 px-4">
+          {user ? (
+            <Dashboard 
+              user={user} 
+              onReportItem={handleReportItem} 
+              key={refreshKey}
+            />
+          ) : (
+            <LandingPage />
+          )}
+        </div>
+
+        {/* Modals */}
+        <ReportModal
+          isOpen={showReportModal}
+          onClose={() => setShowReportModal(false)}
+          reportType={reportType}
+          onSubmit={handleReportSubmit}
+        />
+
+        <PhoneModal
+          isOpen={showPhoneModal}
+          onClose={() => setShowPhoneModal(false)}
+          onSubmit={async (phone) => {
+            try {
+              await updatePhone(phone)
+              setShowPhoneModal(false)
+              await checkUserAuth() // Refresh user data to get updated phone
+            } catch (error) {
+              // Re-throw error so PhoneModal can handle it
+              throw error
+            }
+          }}
+        />
+
+        <SmartMatchesModal
+          isOpen={showSmartMatches}
+          onClose={() => setShowSmartMatches(false)}
+          itemData={submittedItem}
+          currentUser={user}
+          onOpenChat={handleOpenChat}
+        />
+
+        <ChatModal
+          isOpen={showChat}
+          onClose={() => setShowChat(false)}
+          chat={currentChat}
+          currentUser={user}
+        />
+
+        {/* Footer */}
+        <footer className="relative z-10 text-center py-8 text-gray-400 border-t border-gray-800">
+          <p>&copy; 2024 SST Lost & Found. Helping communities reunite with their belongings.</p>
+        </footer>
       </div>
-
-      {/* Modals */}
-      <ReportModal
-        isOpen={showReportModal}
-        onClose={() => setShowReportModal(false)}
-        reportType={reportType}
-        onSubmit={handleReportSubmit}
-      />
-
-      <PhoneModal
-        isOpen={showPhoneModal}
-        onClose={() => setShowPhoneModal(false)}
-        onSubmit={async (phone) => {
-          try {
-            await updatePhone(phone)
-            setShowPhoneModal(false)
-            await checkUserAuth() // Refresh user data to get updated phone
-          } catch (error) {
-            // Re-throw error so PhoneModal can handle it
-            throw error
-          }
-        }}
-      />
-
-      <SmartMatchesModal
-        isOpen={showSmartMatches}
-        onClose={() => setShowSmartMatches(false)}
-        itemData={submittedItem}
-        currentUser={user}
-        onOpenChat={handleOpenChat}
-      />
-
-      <ChatModal
-        isOpen={showChat}
-        onClose={() => setShowChat(false)}
-        chat={currentChat}
-        currentUser={user}
-      />
-
-      <ChatSection
-        isOpen={showChatSection}
-        onClose={() => setShowChatSection(false)}
-        currentUser={user}
-      />
-
-      {/* Footer */}
-      <footer className="relative z-10 text-center py-8 text-gray-400 border-t border-gray-800">
-        <p>&copy; 2024 SST Lost & Found. Helping communities reunite with their belongings.</p>
-      </footer>
-    </div>
+    </NotificationProvider>
   )
 }
 

@@ -68,6 +68,10 @@ const ChatModal = ({ isOpen, onClose, chat, currentUser }) => {
   }
 
   const handleNewMessage = (data) => {
+    if (!chat) {
+      console.log('Chat not initialized yet, ignoring message')
+      return
+    }
     if (data.chatId === chat._id) {
       setMessages(prev => [...prev, data.message])
     }

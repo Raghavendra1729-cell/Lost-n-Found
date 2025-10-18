@@ -4,8 +4,11 @@
   "description": "This is the Backend for the Lost and Found App",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "logs": "tail -f logs/combined.log",
+    "logs:error": "tail -f logs/error.log"
   },
   "keywords": [],
   "author": "Linga Seetha Rama Raghavendra",
@@ -18,13 +21,16 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "express-rate-limit": "^7.1.5",
     "express-session": "^1.18.2",
+    "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.1",
     "multer": "^2.0.2",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "winston": "^3.18.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

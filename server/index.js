@@ -1,7 +1,7 @@
 import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
-import connectDB from './config/config.js'
+import connectDB from './config/database.js'
 import 'dotenv/config'
 import cors from 'cors'
 import session from 'express-session'
@@ -10,10 +10,8 @@ import authRoutes from './routes/auth_routes.js'
 import objectRoutes from './routes/object_routes.js'
 import imageRoutes from './routes/image_routes.js'
 import chatRoutes from './routes/chat_routes.js'
-import itemChatRoutes from './routes/item_chat_routes.js'
 import cookieParser from 'cookie-parser'
 import { saveMessage } from './controllers/chat_controllers.js'
-import { saveItemMessage } from './controllers/item_chat_controllers.js'
 
 //initialize express app
 const app = express()
@@ -44,12 +42,21 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development'
+  })
+})
+
 //routes
 app.use('/api/auth', authRoutes)
 app.use('/api/objects', objectRoutes)
 app.use('/api/images', imageRoutes)
 app.use('/api/chat', chatRoutes)
-app.use('/api/item-chat', itemChatRoutes)
 
 
 
@@ -94,42 +101,6 @@ io.on('connection', (socket) => {
             })
         } catch (error) {
             console.error('Error sending message:', error)
-            socket.emit('message-error', { error: 'Failed to send message' })
-        }
-    })
-
-    // Handle item-based group chat
-    socket.on('join-item-chat', (itemId) => {
-        socket.join(`item-${itemId}`)
-        console.log(`User ${socket.id} joined item chat ${itemId}`)
-    })
-
-    socket.on('leave-item-chat', (itemId) => {
-        socket.leave(`item-${itemId}`)
-        console.log(`User ${socket.id} left item chat ${itemId}`)
-    })
-
-    socket.on('send-item-message', async (data) => {
-        try {
-            const { itemId, senderId, senderName, content } = data
-            
-            // Save message to database
-            const savedMessage = await saveItemMessage(itemId, senderId, senderName, content)
-            
-            const messageData = {
-                _id: savedMessage._id,
-                itemId: savedMessage.itemId,
-                senderId: savedMessage.senderId,
-                senderName: savedMessage.senderName,
-                content: savedMessage.content,
-                timestamp: savedMessage.timestamp
-            }
-            
-            // Broadcast to all users in this item's chat room
-            io.to(`item-${itemId}`).emit('item-chat-message', messageData)
-            console.log(`Message saved and sent to item ${itemId} by ${senderName}`)
-        } catch (error) {
-            console.error('Error sending item message:', error)
             socket.emit('message-error', { error: 'Failed to send message' })
         }
     })

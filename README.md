@@ -1,140 +1,541 @@
-# 🎯 SST Lost & Found App
+# 🔍 Lost & Found App
 
-A modern web application for reporting and finding lost items with real-time chat functionality.
+A comprehensive web application for reporting and managing lost and found items with real-time chat functionality, smart matching algorithms, and user-friendly interface.
 
-## 🚀 How to Use the App
+## 📋 Table of Contents
 
-### 👤 **For New Users**
-1. **Register** - Create an account with your email and password
-2. **Login** - Access your dashboard
-3. **Add Phone** - Complete your profile with a phone number
+- [Features](#-features)
+- [Technologies Used](#-technologies-used)
+- [Project Structure](#-project-structure)
+- [Installation](#-installation)
+- [Configuration](#-configuration)
+- [Usage](#-usage)
+- [API Documentation](#-api-documentation)
+- [Testing](#-testing)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [License](#-license)
 
-### 📱 **Main Features**
+## ✨ Features
 
-#### 🔍 **Search for Items**
-- Use the **Search Engine** on the landing page
-- Search by item name, location, or description
-- View all available lost and found items
+### Core Functionality
+- **User Authentication**: Google OAuth 2.0 integration with JWT tokens
+- **Item Management**: Report lost/found items with images and descriptions
+- **Smart Matching**: AI-powered matching algorithm to connect lost and found items
+- **Real-time Chat**: Direct communication between users about specific items
+- **Image Upload**: Cloudinary integration for secure image storage
+- **Search & Filter**: Advanced search capabilities with location and type filters
 
-#### 📝 **Report Lost/Found Items**
-1. Click **"Report Lost Item"** or **"Report Found Item"**
-2. Fill in the required details:
-   - **Item Name** (required)
-   - **Location** (required)
-   - **Description** (optional)
-   - **Date** (optional)
-   - **Upload Image** (optional)
-3. Submit to save your report
+### Advanced Features
+- **Notification System**: Real-time notifications for messages and matches
+- **Contact Management**: Secure contact information sharing
+- **Status Tracking**: Track item status (active, resolved, archived)
+- **Responsive Design**: Mobile-first design with modern UI/UX
+- **Error Handling**: Comprehensive error boundaries and validation
+- **Rate Limiting**: API protection against abuse
+- **Logging**: Structured logging with Winston
 
-#### 💬 **Chat About Items**
-1. Click the **Chat icon** in the navigation
-2. Select any item from the list
-3. Join the discussion about that item
-4. Send messages in real-time
-5. Messages are saved and visible to all users
+### User Experience
+- **Modern UI**: Clean, intuitive interface with Tailwind CSS
+- **Real-time Updates**: Socket.IO for instant messaging
+- **Image Sharing**: Share images in chat conversations
+- **Mobile Responsive**: Works seamlessly on all devices
+- **Dark Theme**: Professional dark theme design
+- **Loading States**: Smooth loading animations and feedback
 
-#### 🎯 **Smart Matching**
-- After reporting an item, the system shows potential matches
-- View items with high similarity scores
-- Contact item owners or start a chat
+## 🛠 Technologies Used
 
-#### 👤 **Manage Your Items**
-- View your **Lost Items**
-- View your **Found Items** 
-- Check your **Archive** (resolved items)
-- Edit or update item status
+### Frontend
+- **React 18**: Modern React with hooks and functional components
+- **Vite**: Fast build tool and development server
+- **Tailwind CSS**: Utility-first CSS framework
+- **Socket.IO Client**: Real-time communication
+- **React Router**: Client-side routing
+- **Context API**: State management
+- **Axios**: HTTP client for API calls
 
-### 🎨 **Navigation**
-- **Home** - Main dashboard
-- **Chat** - Item discussions
-- **Profile** - Account settings
-- **Logout** - Sign out
+### Backend
+- **Node.js**: JavaScript runtime environment
+- **Express.js**: Web application framework
+- **MongoDB**: NoSQL database with Mongoose ODM
+- **Socket.IO**: Real-time bidirectional communication
+- **JWT**: JSON Web Tokens for authentication
+- **Passport.js**: Authentication middleware
+- **Cloudinary**: Cloud-based image management
+- **Winston**: Logging library
+- **Express Rate Limit**: API rate limiting
+- **Express Validator**: Input validation
 
-### 📊 **Dashboard Tabs**
-- **Lost Items** - Items you've reported as lost
-- **Found Items** - Items you've reported as found
-- **Archive** - Items that have been resolved
+### Development Tools
+- **Nodemon**: Development server with auto-restart
+- **ESLint**: Code linting and formatting
+- **Git**: Version control
+- **Postman**: API testing
 
-## 🛠️ **For Developers**
+## 📁 Project Structure
 
-### 📁 **Project Structure**
 ```
-├── client/                 # Frontend React app
+Lost n Found/
+├── client/                          # Frontend React application
+│   ├── public/                      # Static assets
 │   ├── src/
-│   │   ├── components/     # React components
-│   │   │   ├── chat/       # Chat functionality
-│   │   │   ├── dashboard/  # Dashboard components
-│   │   │   ├── modals/     # Modal dialogs
-│   │   │   ├── objects/    # Item display components
-│   │   │   └── ui/         # UI components & animations
-│   │   ├── pages/          # Main pages
-│   │   ├── api/            # API calls
-│   │   └── contexts/       # React contexts
-│   └── package.json
-├── server/                 # Backend Node.js app
-│   ├── controllers/        # API controllers
-│   ├── models/            # Database models
-│   ├── routes/            # API routes
-│   ├── config/            # Configuration files
-│   └── package.json
-└── README.md
+│   │   ├── api/                     # API service functions
+│   │   │   ├── auth_api.js          # Authentication API calls
+│   │   │   ├── chat_api.js          # Chat API calls
+│   │   │   ├── image_api.js         # Image upload API calls
+│   │   │   └── object_api.js        # Object management API calls
+│   │   ├── components/              # React components
+│   │   │   ├── common/              # Shared components
+│   │   │   │   ├── ErrorBoundary.jsx
+│   │   │   │   ├── ImageUpload.jsx
+│   │   │   │   └── LandingPage.jsx
+│   │   │   ├── dashboard/           # Dashboard components
+│   │   │   │   ├── Dashboard.jsx
+│   │   │   │   └── UserProfile.jsx
+│   │   │   ├── layout/              # Layout components
+│   │   │   │   └── Navigation.jsx
+│   │   │   ├── modals/              # Modal components
+│   │   │   │   ├── ChatModal.jsx
+│   │   │   │   ├── ContactModal.jsx
+│   │   │   │   ├── ConfirmationModal.jsx
+│   │   │   │   ├── PhoneModal.jsx
+│   │   │   │   ├── ReportModal.jsx
+│   │   │   │   └── SmartMatchesModal.jsx
+│   │   │   ├── objects/             # Object-related components
+│   │   │   │   ├── ArchiveList.jsx
+│   │   │   │   ├── FoundList.jsx
+│   │   │   │   ├── LostList.jsx
+│   │   │   │   ├── SearchBar.jsx
+│   │   │   │   └── SearchResults.jsx
+│   │   │   └── ui/                  # UI components
+│   │   │       ├── AnimatedBackground.jsx
+│   │   │       ├── LoadingSpinner.jsx
+│   │   │       ├── NotificationBar.jsx
+│   │   │       └── Toast.jsx
+│   │   ├── contexts/                # React contexts
+│   │   │   ├── NotificationContext.jsx
+│   │   │   └── SocketContext.jsx
+│   │   ├── hooks/                   # Custom React hooks
+│   │   ├── pages/                   # Page components
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── LoginPage.jsx
+│   │   │   └── RegisterPage.jsx
+│   │   ├── utils/                  # Utility functions
+│   │   │   └── imageUtils.js
+│   │   ├── App.jsx                 # Main App component
+│   │   ├── main.jsx                # Application entry point
+│   │   └── index.css               # Global styles
+│   ├── package.json                # Frontend dependencies
+│   ├── vite.config.js             # Vite configuration
+│   └── eslint.config.js           # ESLint configuration
+├── server/                         # Backend Node.js application
+│   ├── config/                     # Configuration files
+│   │   ├── cloudinary.js           # Cloudinary configuration
+│   │   ├── config.js               # Main configuration
+│   │   ├── database.js             # Database connection
+│   │   └── passport.js             # Passport configuration
+│   ├── controllers/                # Route controllers
+│   │   ├── auth_controllers.js     # Authentication logic
+│   │   ├── chat_controllers.js     # Chat functionality
+│   │   ├── image_controllers.js    # Image handling
+│   │   └── object_controllers.js    # Object management
+│   ├── middlewares/                # Express middlewares
+│   │   ├── auth_middleware.js      # Authentication middleware
+│   │   ├── rateLimiter.js          # Rate limiting
+│   │   └── validation.js           # Input validation
+│   ├── models/                     # Mongoose models
+│   │   ├── chat_model.js           # Chat schema
+│   │   ├── object_model.js         # Object schema
+│   │   └── user_model.js           # User schema
+│   ├── routes/                     # Express routes
+│   │   ├── auth_routes.js          # Authentication routes
+│   │   ├── chat_routes.js          # Chat routes
+│   │   ├── image_routes.js         # Image routes
+│   │   └── object_routes.js        # Object routes
+│   ├── utils/                      # Utility functions
+│   │   ├── auth_token.js           # JWT utilities
+│   │   └── logger.js               # Logging utilities
+│   ├── logs/                       # Log files
+│   ├── package.json                # Backend dependencies
+│   └── index.js                    # Server entry point
+└── README.md                       # This file
 ```
 
-### 🚀 **Quick Start**
+## 🚀 Installation
 
-1. **Clone the repository**
-2. **Install dependencies**:
-   ```bash
-   # Backend
-   cd server
-   npm install
-   
-   # Frontend  
-   cd ../client
-   npm install
-   ```
+### Prerequisites
+- Node.js (v18 or higher)
+- MongoDB (local or cloud instance)
+- Cloudinary account (for image storage)
+- Google OAuth credentials
 
-3. **Set up environment variables**:
-   - Copy `.env.example` to `.env` in the server folder
-   - Add your MongoDB connection string
-   - Add JWT secret and other required variables
+### Step 1: Clone the Repository
+```bash
+git clone <repository-url>
+cd "Lost n Found"
+```
 
-4. **Start the applications**:
-   ```bash
-   # Start backend (port 3000)
-   cd server
-   npm run dev
-   
-   # Start frontend (port 5173)
-   cd client
-   npm run dev
-   ```
+### Step 2: Install Dependencies
 
-5. **Open your browser** and go to `http://localhost:5173`
+#### Backend Dependencies
+```bash
+cd server
+npm install
+```
 
-### 🗄️ **Database Models**
-- **User** - User accounts and profiles
-- **Object** - Lost and found items
-- **ItemMessage** - Chat messages for items
-- **Chat** - User-to-user conversations
+#### Frontend Dependencies
+```bash
+cd ../client
+npm install
+```
 
-### 🔌 **API Endpoints**
-- **Authentication**: `/api/auth/*`
-- **Objects**: `/api/objects/*`
-- **Images**: `/api/images/*`
-- **Chat**: `/api/chat/*`
-- **Item Chat**: `/api/item-chat/*`
+### Step 3: Environment Configuration
 
-### 🎨 **Technologies Used**
-- **Frontend**: React, Tailwind CSS, Socket.IO
-- **Backend**: Node.js, Express, Socket.IO
-- **Database**: MongoDB with Mongoose
-- **Authentication**: JWT with Google OAuth
-- **Image Storage**: Cloudinary
-- **Real-time**: WebSocket connections
+Create a `.env` file in the server directory:
 
-## 📞 **Support**
-For issues or questions, please check the console logs or contact the development team.
+```env
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# Database
+MONGODB_URI=mongodb://localhost:27017/lost-found-app
+
+# JWT Configuration
+JWT_SECRET=your-super-secret-jwt-key
+JWT_EXPIRE=30d
+
+# Cloudinary Configuration
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
+# Google OAuth
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+
+# CORS
+CORS_ORIGIN=http://localhost:5173
+
+# Security
+SESSION_SECRET=your-session-secret
+BCRYPT_ROUNDS=12
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# File Upload
+MAX_FILE_SIZE=5242880
+ALLOWED_FILE_TYPES=image/jpeg,image/png,image/gif,image/webp
+
+# Logging
+LOG_LEVEL=info
+```
+
+## ⚙️ Configuration
+
+### MongoDB Setup
+1. Install MongoDB locally or use MongoDB Atlas
+2. Update `MONGODB_URI` in your `.env` file
+3. Ensure MongoDB is running on the specified port
+
+### Cloudinary Setup
+1. Create a Cloudinary account
+2. Get your cloud name, API key, and API secret
+3. Update the Cloudinary configuration in `.env`
+
+### Google OAuth Setup
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing
+3. Enable Google+ API
+4. Create OAuth 2.0 credentials
+5. Add authorized redirect URIs:
+   - `http://localhost:3000/api/auth/google/callback`
+6. Update `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `.env`
+
+## 🎯 Usage
+
+### Development Mode
+
+#### Start Backend Server
+```bash
+cd server
+npm run dev
+```
+Server will start on `http://localhost:3000`
+
+#### Start Frontend Development Server
+```bash
+cd client
+npm run dev
+```
+Frontend will start on `http://localhost:5173`
+
+### Production Mode
+
+#### Build Frontend
+```bash
+cd client
+npm run build
+```
+
+#### Start Production Server
+```bash
+cd server
+npm start
+```
+
+### Available Scripts
+
+#### Backend Scripts
+- `npm start`: Start production server
+- `npm run dev`: Start development server with nodemon
+- `npm run logs`: View combined logs
+- `npm run logs:error`: View error logs only
+
+#### Frontend Scripts
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm run preview`: Preview production build
+- `npm run lint`: Run ESLint
+
+## 📚 API Documentation
+
+### Authentication Endpoints
+
+#### POST `/api/auth/register`
+Register a new user
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+
+#### POST `/api/auth/login`
+Login user
+```json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+
+#### GET `/api/auth/google`
+Initiate Google OAuth flow
+
+#### GET `/api/auth/profile`
+Get current user profile (requires authentication)
+
+### Object Endpoints
+
+#### GET `/api/objects/all`
+Get all objects (requires authentication)
+
+#### POST `/api/objects`
+Create new object (requires authentication)
+```json
+{
+  "name": "iPhone 12",
+  "description": "Lost my phone",
+  "type": "lost",
+  "location": "Central Park",
+  "date": "2024-01-15T10:00:00Z"
+}
+```
+
+#### GET `/api/objects/search`
+Search objects with query parameters
+- `q`: Search query
+- `type`: Object type (lost/found)
+- `location`: Location filter
+
+#### GET `/api/objects/:id/matches`
+Get matches for specific object
+
+### Chat Endpoints
+
+#### POST `/api/chat/create`
+Create or get existing chat
+```json
+{
+  "otherUserId": "user_id",
+  "itemId": "item_id"
+}
+```
+
+#### GET `/api/chat/list`
+Get all chats for current user
+
+#### GET `/api/chat/:chatId/messages`
+Get messages for specific chat
+
+#### POST `/api/chat/:chatId/resolve`
+Mark chat and item as resolved
+
+### Image Endpoints
+
+#### POST `/api/images/upload`
+Upload image (multipart/form-data)
+- `image`: Image file
+
+#### DELETE `/api/images/:publicId`
+Delete image by public ID
+
+### Health Check
+
+#### GET `/health`
+Server health status
+```json
+{
+  "status": "OK",
+  "timestamp": "2024-01-15T10:00:00Z",
+  "uptime": 3600,
+  "environment": "development"
+}
+```
+
+## 🧪 Testing
+
+### Manual Testing
+
+#### Test User Registration
+1. Navigate to `/register`
+2. Fill in registration form
+3. Verify account creation
+
+#### Test Item Reporting
+1. Login to the application
+2. Click "Report Item"
+3. Fill in item details and upload image
+4. Verify item appears in dashboard
+
+#### Test Chat Functionality
+1. Find a matching item
+2. Click "Contact Owner/Finder"
+3. Send messages and verify real-time updates
+4. Test image sharing in chat
+
+#### Test Search Functionality
+1. Use search bar to find items
+2. Apply filters by type and location
+3. Verify search results accuracy
+
+### API Testing with cURL
+
+#### Test Authentication
+```bash
+# Register user
+curl -X POST http://localhost:3000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test User","email":"test@example.com","password":"password123"}'
+
+# Login user
+curl -X POST http://localhost:3000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
+```
+
+#### Test Object Creation
+```bash
+curl -X POST http://localhost:3000/api/objects \
+  -H "Content-Type: application/json" \
+  -H "Cookie: token=your-jwt-token" \
+  -d '{"name":"Test Item","type":"lost","location":"Test Location","date":"2024-01-15T10:00:00Z"}'
+```
+
+## 🚀 Deployment
+
+### Environment Variables for Production
+```env
+NODE_ENV=production
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/lost-found-app
+CORS_ORIGIN=https://yourdomain.com
+JWT_SECRET=your-production-secret-key
+```
+
+### Docker Deployment (Optional)
+
+#### Dockerfile for Backend
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
+```
+
+#### Dockerfile for Frontend
+```dockerfile
+FROM node:18-alpine as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+### Cloud Deployment Options
+- **Heroku**: Easy deployment with built-in MongoDB
+- **Vercel**: Frontend deployment with serverless functions
+- **AWS**: EC2 for backend, S3 for static files
+- **DigitalOcean**: Droplets for full-stack deployment
+
+## 🤝 Contributing
+
+### Development Workflow
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/new-feature`
+3. Make your changes
+4. Test thoroughly
+5. Commit your changes: `git commit -m "Add new feature"`
+6. Push to the branch: `git push origin feature/new-feature`
+7. Create a Pull Request
+
+### Code Standards
+- Use ESLint for code formatting
+- Write meaningful commit messages
+- Add comments for complex logic
+- Test all new features
+- Update documentation as needed
+
+### Bug Reports
+When reporting bugs, please include:
+- Steps to reproduce
+- Expected behavior
+- Actual behavior
+- Browser/device information
+- Console errors (if any)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Authors
+
+- **Linga Seetha Rama Raghavendra** - *Initial work* - [GitHub Profile](https://github.com/yourusername)
+
+## 🙏 Acknowledgments
+
+- React community for excellent documentation
+- MongoDB for robust database solution
+- Cloudinary for image management
+- Socket.IO for real-time communication
+- Tailwind CSS for beautiful styling
+
+## 📞 Support
+
+For support, email support@lostfoundapp.com or create an issue in the repository.
 
 ---
-*Built with ❤️ for the SST community*
+
+**Made with ❤️ for helping people find their lost items**
