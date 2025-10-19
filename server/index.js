@@ -25,9 +25,9 @@ app.use(cookieParser())
 app.use(cors({
     origin: [
         'http://localhost:5173',
-        'https://lost-n-found-sandy.vercel.app',
-        'https://lost-n-found-pj949fa0u-raghavendra1729-cells-projects.vercel.app'
-    ], 
+        process.env.CLIENT_URL,
+        process.env.CORS_ORIGIN
+    ].filter(Boolean), // Remove any undefined values
     credentials: true
 }))
 
@@ -73,9 +73,9 @@ const io = new Server(server, {
     cors: {
         origin: [
             'http://localhost:5173',
-            'https://lost-n-found-sandy.vercel.app',
-            'https://lost-n-found-pj949fa0u-raghavendra1729-cells-projects.vercel.app'
-        ],
+            process.env.CLIENT_URL,
+            process.env.CORS_ORIGIN
+        ].filter(Boolean), // Remove any undefined values
         credentials: true
     }
 })
