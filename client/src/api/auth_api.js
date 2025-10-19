@@ -10,6 +10,11 @@ const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   (config) => {
+    // Add Authorization header if token exists in localStorage
+    const token = localStorage.getItem('auth_token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
     console.log('🔄 API Request:', config.method?.toUpperCase(), config.url, config.data)
     return config
   },
@@ -23,6 +28,12 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => {
     console.log('✅ API Response:', response.status, response.data)
+    
+    // Check if response contains a token (from login/register)
+    if (response.data?.token) {
+      localStorage.setItem('auth_token', response.data.token)
+    }
+    
     return response
   },
   (error) => {
@@ -30,7 +41,8 @@ api.interceptors.response.use(
     
     // Handle common errors
     if (error.response?.status === 401) {
-      console.log('🔒 Unauthorized - redirecting to login')
+      console.log('🔒 Unauthorized - clearing token and redirecting to login')
+      localStorage.removeItem('auth_token')
       // You can add redirect logic here later
     }
     
@@ -64,8 +76,12 @@ export const loginUser = async (credentials) => {
 export const logoutUser = async () => {
   try {
     const response = await api.post('/auth/logout')
+    // Clear token from localStorage
+    localStorage.removeItem('auth_token')
     return response.data
   } catch (error) {
+    // Clear token even if logout fails
+    localStorage.removeItem('auth_token')
     throw error
   }
 }
@@ -102,6 +118,7 @@ export const handleGoogleCallback = () => {
   const authResult = urlParams.get('auth')
   const message = urlParams.get('message')
   const needsPhone = urlParams.get('needsPhone') === 'true'
+  const token = urlParams.get('token')
 
   const cleanup = () => {
     window.history.replaceState({}, document.title, window.location.pathname)
@@ -109,6 +126,12 @@ export const handleGoogleCallback = () => {
 
   if (authResult === 'success') {
     console.log('✅ Google OAuth successful!')
+    
+    // Store token if provided
+    if (token) {
+      localStorage.setItem('auth_token', token)
+    }
+    
     if (needsPhone) {
       // Don't redirect; signal caller to collect phone
       return { auth: 'success', needsPhone: true, cleanup }

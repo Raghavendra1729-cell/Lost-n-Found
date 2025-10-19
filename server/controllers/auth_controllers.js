@@ -30,7 +30,7 @@ const register = async (req, res) => {
             path: '/' // Explicitly set path
         })
         user.password = undefined // Remove password from response for security reasons
-        res.status(201).json({ message: 'User created successfully', user })
+        res.status(201).json({ message: 'User created successfully', user, token })
     } catch (error) {
         console.error('Registration error:', error)
         res.status(500).json({ message: 'Internal server error' })
@@ -63,7 +63,7 @@ const login = async (req, res) => {
         })
         console.log('✅ Cookie set successfully')
         user.password = undefined // Remove password from response for security reasons
-        res.status(200).json({ message: 'Logged in successfully', user })
+        res.status(200).json({ message: 'Logged in successfully', user, token })
     } catch (error) {
         console.error('Login error:', error)
         res.status(500).json({ message: 'Internal server error' })
@@ -162,10 +162,10 @@ const googleCallback = (req, res, next) => {
             const needsPhone = !user.phone || String(user.phone).trim().length === 0
             const baseClient = process.env.CLIENT_URL || 'http://localhost:5173'
             if (needsPhone) {
-                return res.redirect(`${baseClient}?auth=success&needsPhone=true`)
+                return res.redirect(`${baseClient}?auth=success&needsPhone=true&token=${token}`)
             }
             // Redirect to frontend with success when phone present
-            res.redirect(`${baseClient}?auth=success`)
+            res.redirect(`${baseClient}?auth=success&token=${token}`)
         } catch (error) {
             console.error('Google callback error:', error)
             res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}?auth=error&message=${encodeURIComponent(error.message)}`)
