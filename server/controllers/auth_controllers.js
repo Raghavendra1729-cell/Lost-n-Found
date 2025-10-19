@@ -25,9 +25,8 @@ const register = async (req, res) => {
         res.cookie('token', token, { 
             httpOnly: true, 
             secure: process.env.NODE_ENV === 'production', // Only secure in production
-            sameSite: 'lax', // Changed from 'strict' to 'lax' for better compatibility
+            sameSite: 'none', // Changed to 'none' for cross-origin requests
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-            domain: 'localhost', // Explicitly set domain
             path: '/' // Explicitly set path
         })
         user.password = undefined // Remove password from response for security reasons
@@ -58,9 +57,8 @@ const login = async (req, res) => {
         res.cookie('token', token, { 
             httpOnly: true, 
             secure: process.env.NODE_ENV === 'production', // Only secure in production
-            sameSite: 'lax', // Changed from 'strict' to 'lax' for better compatibility
+            sameSite: 'none', // Changed to 'none' for cross-origin requests
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-            domain: 'localhost', // Explicitly set domain
             path: '/' // Explicitly set path
         })
         console.log('✅ Cookie set successfully')
@@ -77,9 +75,8 @@ const logout = async (req, res) => {
         res.cookie('token', '', { 
             httpOnly: true, 
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax', 
+            sameSite: 'none', 
             maxAge: 0,
-            domain: 'localhost',
             path: '/'
         })
         res.status(200).json({ message: 'Logged out successfully' })
@@ -153,9 +150,8 @@ const googleCallback = (req, res, next) => {
             res.cookie('token', token, { 
                 httpOnly: true, 
                 secure: process.env.NODE_ENV === 'production',
-                sameSite: 'lax', 
+                sameSite: 'none', 
                 maxAge: 30 * 24 * 60 * 60 * 1000,
-                domain: 'localhost',
                 path: '/'
             })
             console.log('✅ Google OAuth cookie set successfully')
