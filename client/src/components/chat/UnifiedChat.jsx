@@ -22,6 +22,7 @@ const UnifiedChat = ({ currentUser, onClose }) => {
         onSelectChat={handleSelectChat}
         currentChat={currentChat}
         currentUser={currentUser}
+        onClose={onClose}
       />
 
       {/* Chat Interface */}

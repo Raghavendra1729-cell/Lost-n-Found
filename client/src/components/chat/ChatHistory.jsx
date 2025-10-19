@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { getUserChats } from '../../api/chat_api'
 
-const ChatHistory = ({ onSelectChat, currentChat, currentUser }) => {
+const ChatHistory = ({ onSelectChat, currentChat, currentUser, onClose }) => {
   const [chats, setChats] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -63,9 +63,20 @@ const ChatHistory = ({ onSelectChat, currentChat, currentUser }) => {
   return (
     <div className="w-80 bg-white border-r border-gray-200 flex flex-col h-full">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700">
-        <h2 className="text-xl font-bold text-white">Messages</h2>
-        <p className="text-blue-100 text-sm">{chats.length} conversations</p>
+      <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700 flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-white">Messages</h2>
+          <p className="text-blue-100 text-sm">{chats.length} conversations</p>
+        </div>
+        <button
+          onClick={onClose}
+          className="text-white hover:text-blue-200 transition-colors p-2 rounded-full hover:bg-white hover:bg-opacity-10"
+          title="Close chat"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
 
       {/* Chat List */}
