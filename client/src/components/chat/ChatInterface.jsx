@@ -145,20 +145,20 @@ const ChatInterface = ({ chat, otherUser, currentUser, onClose }) => {
   return (
     <div className="flex flex-col h-full bg-white rounded-lg shadow-xl overflow-hidden">
       {/* Enhanced Chat Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 text-white">
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-3 sm:p-4 text-white">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="relative">
-              <div className="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-white font-bold text-lg">
+          <div className="flex items-center space-x-2 sm:space-x-3 min-w-0 flex-1">
+            <div className="relative flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-lg">
                 {otherUser.name.charAt(0).toUpperCase()}
               </div>
-              <div className={`absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-white ${
+              <div className={`absolute bottom-0 right-0 w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-white ${
                 isConnected ? 'bg-green-400' : 'bg-gray-400'
               }`}></div>
             </div>
-            <div>
-              <h3 className="font-bold text-lg">{otherUser.name}</h3>
-              <p className="text-blue-100 text-sm">
+            <div className="min-w-0 flex-1">
+              <h3 className="font-bold text-base sm:text-lg truncate">{otherUser.name}</h3>
+              <p className="text-blue-100 text-xs sm:text-sm truncate">
                 {isConnected ? 'Online' : 'Offline'}
                 {isTyping && ' • Typing...'}
               </p>
@@ -166,9 +166,9 @@ const ChatInterface = ({ chat, otherUser, currentUser, onClose }) => {
           </div>
           <button
             onClick={onClose}
-            className="text-white hover:text-blue-200 transition-colors p-2 rounded-full hover:bg-white hover:bg-opacity-10"
+            className="text-white hover:text-blue-200 transition-colors p-1 sm:p-2 rounded-full hover:bg-white hover:bg-opacity-10 flex-shrink-0"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -176,7 +176,7 @@ const ChatInterface = ({ chat, otherUser, currentUser, onClose }) => {
       </div>
 
       {/* Enhanced Messages Area */}
-      <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-50 to-white p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto bg-gradient-to-b from-gray-50 to-white p-2 sm:p-4 space-y-3 sm:space-y-4">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
@@ -198,7 +198,7 @@ const ChatInterface = ({ chat, otherUser, currentUser, onClose }) => {
                 className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'} animate-fadeIn`}
               >
                 <div
-                  className={`max-w-xs lg:max-w-md px-4 py-3 rounded-2xl shadow-sm ${
+                  className={`max-w-[85%] sm:max-w-xs lg:max-w-md px-3 sm:px-4 py-2 sm:py-3 rounded-2xl shadow-sm ${
                     isOwnMessage
                       ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white'
                       : 'bg-white border border-gray-200 text-gray-800'
@@ -209,8 +209,8 @@ const ChatInterface = ({ chat, otherUser, currentUser, onClose }) => {
                       {message.senderName}
                     </div>
                   )}
-                  <div className="text-sm leading-relaxed">{message.content}</div>
-                  <div className={`text-xs mt-2 flex items-center justify-end ${
+                  <div className="text-xs sm:text-sm leading-relaxed">{message.content}</div>
+                  <div className={`text-xs mt-1 sm:mt-2 flex items-center justify-end ${
                     isOwnMessage ? 'text-blue-100' : 'text-gray-500'
                   }`}>
                     <span>{formatTime(message.timestamp)}</span>
@@ -231,8 +231,8 @@ const ChatInterface = ({ chat, otherUser, currentUser, onClose }) => {
       </div>
 
       {/* Enhanced Message Input */}
-      <div className="bg-white border-t border-gray-200 p-4">
-        <form onSubmit={handleSendMessage} className="flex items-end space-x-3">
+      <div className="bg-white border-t border-gray-200 p-2 sm:p-4">
+        <form onSubmit={handleSendMessage} className="flex items-end space-x-2 sm:space-x-3">
           <div className="flex-1 relative">
             <input
               type="text"
@@ -240,13 +240,13 @@ const ChatInterface = ({ chat, otherUser, currentUser, onClose }) => {
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Type your message..."
               disabled={loading}
-              className="w-full p-3 pr-12 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 resize-none"
+              className="w-full p-2 sm:p-3 pr-10 sm:pr-12 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50 resize-none text-sm sm:text-base"
             />
             <button
               type="button"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
               </svg>
             </button>
@@ -254,12 +254,12 @@ const ChatInterface = ({ chat, otherUser, currentUser, onClose }) => {
           <button
             type="submit"
             disabled={loading || !newMessage.trim()}
-            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
+            className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-2xl hover:from-blue-600 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-lg hover:shadow-xl"
           >
             {loading ? (
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-white"></div>
             ) : (
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>
             )}

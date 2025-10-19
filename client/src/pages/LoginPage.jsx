@@ -91,18 +91,18 @@ const LoginPage = () => {
         <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-cyan-400/15 to-transparent animate-light-beam animation-delay-3000"></div>
       </div>
 
-      <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
-        <div className="bg-gray-900/95 backdrop-blur-xl p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700">
+      <div className="relative z-10 flex items-center justify-center min-h-screen p-2 sm:p-4">
+        <div className="bg-gray-900/95 backdrop-blur-xl p-4 sm:p-6 lg:p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-700">
           {/* Header */}
-          <div className="text-center mb-8">
-            <Link to="/" className="text-white text-2xl font-semibold">
+          <div className="text-center mb-6 sm:mb-8">
+            <Link to="/" className="text-white text-xl sm:text-2xl font-semibold">
               Lost & Found
             </Link>
-            <p className="text-gray-400 mt-3">Welcome back! Sign in to your account</p>
+            <p className="text-gray-400 mt-2 sm:mt-3 text-sm sm:text-base">Welcome back! Sign in to your account</p>
           </div>
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <div className="space-y-2">
               <label className="block text-gray-300 font-medium text-sm">Email Address</label>
               <input
@@ -111,7 +111,7 @@ const LoginPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400 text-sm sm:text-base"
                 placeholder="Enter your email"
               />
             </div>
@@ -125,13 +125,13 @@ const LoginPage = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 pr-12 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 sm:pr-12 bg-gray-800 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400 text-sm sm:text-base"
                   placeholder="Enter your password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors"
+                  className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors"
                 >
                   {showPassword ? '🙈' : '👁️'}
                 </button>
@@ -141,11 +141,11 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-white text-black py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-white text-black py-2 sm:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
             >
               {isLoading ? (
                 <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black mr-2"></div>
+                  <div className="animate-spin rounded-full h-4 w-4 sm:h-5 sm:w-5 border-b-2 border-black mr-2"></div>
                   Signing In...
                 </div>
               ) : (
@@ -155,26 +155,26 @@ const LoginPage = () => {
           </form>
 
           {/* Divider */}
-          <div className="relative my-8">
+          <div className="relative my-6 sm:my-8">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-600"></div>
             </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-gray-900 text-gray-400">or continue with</span>
+            <div className="relative flex justify-center text-xs sm:text-sm">
+              <span className="px-3 sm:px-4 bg-gray-900 text-gray-400">or continue with</span>
             </div>
           </div>
 
           {/* Google Login */}
           <button
             onClick={handleGoogleLogin}
-            className="w-full bg-gray-800 border border-gray-600 text-white py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center gap-3"
+            className="w-full bg-gray-800 border border-gray-600 text-white py-2 sm:py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors duration-200 flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-base"
           >
             <span>Continue with Google</span>
           </button>
 
           {/* Register Link */}
-          <div className="text-center mt-8">
-            <p className="text-gray-400">
+          <div className="text-center mt-6 sm:mt-8">
+            <p className="text-gray-400 text-sm sm:text-base">
               Don't have an account?{' '}
               <Link to="/register" className="text-white font-medium hover:underline transition-colors">
                 Sign up here
@@ -183,8 +183,8 @@ const LoginPage = () => {
           </div>
 
           {/* Back to Home */}
-          <div className="text-center mt-6">
-            <Link to="/" className="text-gray-500 hover:text-gray-300 transition-colors inline-flex items-center gap-2">
+          <div className="text-center mt-4 sm:mt-6">
+            <Link to="/" className="text-gray-500 hover:text-gray-300 transition-colors inline-flex items-center gap-2 text-sm sm:text-base">
               <span>←</span>
               Back to Home
             </Link>

@@ -157,7 +157,7 @@ const HomePage = () => {
         <Navigation user={user} handleLogout={handleLogout} />
 
         {/* Main Content */}
-        <div className="relative z-10 py-20 px-4">
+        <div className="relative z-10 py-12 sm:py-16 lg:py-20 px-2 sm:px-4">
           {user ? (
             <Dashboard 
               user={user} 
@@ -211,8 +211,8 @@ const HomePage = () => {
 
         {/* Global Chat Interface */}
         {showChat && currentChat && currentOtherUser && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg w-full max-w-4xl h-[80vh] max-h-[600px]">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+            <div className="bg-white rounded-lg w-full max-w-4xl h-[85vh] sm:h-[80vh] max-h-[600px] sm:max-h-[600px]">
               <ChatInterface
                 chat={currentChat}
                 otherUser={currentOtherUser}
@@ -225,8 +225,8 @@ const HomePage = () => {
 
         {/* Enhanced Chat Interface */}
         {showEnhancedChat && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg w-full max-w-7xl h-[90vh] max-h-[800px]">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+            <div className="bg-white rounded-lg w-full max-w-7xl h-[90vh] sm:h-[90vh] max-h-[800px] sm:max-h-[800px]">
               <EnhancedChat
                 currentUser={user}
                 onClose={handleCloseEnhancedChat}
@@ -239,8 +239,8 @@ const HomePage = () => {
 
         {/* Unified Chat Interface */}
         {showUnifiedChat && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg w-full max-w-6xl h-[85vh] max-h-[700px]">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+            <div className="bg-white rounded-lg w-full max-w-6xl h-[85vh] sm:h-[85vh] max-h-[700px] sm:max-h-[700px]">
               <UnifiedChat
                 currentUser={user}
                 onClose={handleCloseUnifiedChat}
@@ -250,8 +250,8 @@ const HomePage = () => {
         )}
 
         {/* Footer */}
-        <footer className="relative z-10 text-center py-8 text-gray-400 border-t border-gray-800">
-          <p>&copy; 2024 SST Lost & Found. Helping communities reunite with their belongings.</p>
+        <footer className="relative z-10 text-center py-6 sm:py-8 text-gray-400 border-t border-gray-800 px-2 sm:px-4">
+          <p className="text-sm sm:text-base">&copy; 2024 SST Lost & Found. Helping communities reunite with their belongings.</p>
         </footer>
       </div>
     </NotificationProvider>

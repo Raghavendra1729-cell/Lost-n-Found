@@ -58,36 +58,37 @@ const Dashboard = ({ user, onReportItem, onOpenUnifiedChat }) => {
   const foundItems = filtered.filter(item => item.type === 'found' && item.status === 'active')
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto px-2 sm:px-4">
       {/* Welcome Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+      <div className="text-center mb-8 sm:mb-12">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-3 sm:mb-4 leading-tight">
           <span className="professional-text">Welcome back,</span>
         </h1>
-        <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed professional-text-shadow">
+        <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed professional-text-shadow px-4">
           <span className="text-blue-300 font-semibold">{user.name}</span>! 
           Manage your lost and found items efficiently.
         </p>
         
         {/* Chat Button */}
-          <div className="mt-6">
-            <button
-              onClick={onOpenUnifiedChat}
-              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-purple-500/25 transform hover:scale-105"
-            >
-              <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
-              </svg>
-              Messages & Chat
-            </button>
-          </div>
+        <div className="mt-4 sm:mt-6 px-4">
+          <button
+            onClick={onOpenUnifiedChat}
+            className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-base sm:text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-purple-500/25 transform hover:scale-105 w-full sm:w-auto justify-center"
+          >
+            <svg className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+            </svg>
+            <span className="hidden sm:inline">Messages & Chat</span>
+            <span className="sm:hidden">Chat</span>
+          </button>
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         {/* Search Section */}
-        <div className="bg-gray-800/40 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50 professional-bg">
-          <h2 className="text-2xl font-bold text-white mb-6 professional-text-shadow">Search All Items</h2>
+        <div className="bg-gray-800/40 backdrop-blur-lg rounded-2xl p-4 sm:p-6 border border-gray-700/50 professional-bg">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 professional-text-shadow">Search All Items</h2>
           <SearchBar 
             query={query} 
             onChange={setQuery} 
@@ -96,11 +97,11 @@ const Dashboard = ({ user, onReportItem, onOpenUnifiedChat }) => {
         </div>
 
         {/* Tab Navigation */}
-        <div className="bg-gray-800/40 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50 professional-bg">
-          <div className="flex flex-wrap gap-4 mb-6">
+        <div className="bg-gray-800/40 backdrop-blur-lg rounded-2xl p-4 sm:p-6 border border-gray-700/50 professional-bg">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-4 sm:mb-6">
             <button
               onClick={() => setActiveTab('lost')}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${
                 activeTab === 'lost'
                   ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/25'
                   : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50'
@@ -110,7 +111,7 @@ const Dashboard = ({ user, onReportItem, onOpenUnifiedChat }) => {
             </button>
             <button
               onClick={() => setActiveTab('found')}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${
                 activeTab === 'found'
                   ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/25'
                   : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50'
@@ -120,7 +121,7 @@ const Dashboard = ({ user, onReportItem, onOpenUnifiedChat }) => {
             </button>
             <button
               onClick={() => setActiveTab('archive')}
-              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+              className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${
                 activeTab === 'archive'
                   ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg shadow-blue-500/25'
                   : 'bg-gray-700/50 text-gray-300 hover:bg-gray-600/50'
@@ -131,44 +132,44 @@ const Dashboard = ({ user, onReportItem, onOpenUnifiedChat }) => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-4 sm:mb-6">
             <button
               onClick={() => onReportItem('lost')}
-              className="px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/25 card-hover"
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/25 card-hover text-sm sm:text-base"
             >
               Report Lost Item
             </button>
             <button
               onClick={() => onReportItem('found')}
-              className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/25 card-hover"
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/25 card-hover text-sm sm:text-base"
             >
               Report Found Item
             </button>
             <button
               onClick={() => setShowSearchResults(true)}
-              className="px-6 py-3 border-2 border-blue-400 text-blue-300 font-semibold rounded-xl hover:bg-blue-400/10 hover:border-blue-300 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25 card-hover"
+              className="px-4 sm:px-6 py-2 sm:py-3 border-2 border-blue-400 text-blue-300 font-semibold rounded-xl hover:bg-blue-400/10 hover:border-blue-300 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25 card-hover text-sm sm:text-base"
             >
               Browse All Items
             </button>
           </div>
 
           {/* Tab Content */}
-          <div className="min-h-[400px]">
+          <div className="min-h-[300px] sm:min-h-[400px]">
             {activeTab === 'lost' && (
               <div>
-                <h3 className="text-xl font-bold text-white mb-4 professional-text-shadow">Lost Items</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4 professional-text-shadow">Lost Items</h3>
                 <LostList items={lostItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} currentUser={user} onResolve={handleResolve} onOpenEnhancedChat={onOpenUnifiedChat} />
               </div>
             )}
             {activeTab === 'found' && (
               <div>
-                <h3 className="text-xl font-bold text-white mb-4 professional-text-shadow">Found Items</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4 professional-text-shadow">Found Items</h3>
                 <FoundList items={foundItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} currentUser={user} onResolve={handleResolve} onOpenEnhancedChat={onOpenUnifiedChat} />
               </div>
             )}
             {activeTab === 'archive' && (
               <div>
-                <h3 className="text-xl font-bold text-white mb-4 professional-text-shadow">Archived Items</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4 professional-text-shadow">Archived Items</h3>
                 <ArchiveList items={archive} />
               </div>
             )}
