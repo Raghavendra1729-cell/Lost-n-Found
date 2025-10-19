@@ -23,7 +23,11 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(cors({
-    origin: ['http://localhost:5173'], 
+    origin: [
+        'http://localhost:5173',
+        'https://lost-n-found-sandy.vercel.app',
+        'https://lost-n-found-pj949fa0u-raghavendra1729-cells-projects.vercel.app'
+    ], 
     credentials: true
 }))
 
@@ -67,7 +71,11 @@ app.use('/api/users', userRoutes)
 // Initialize Socket.IO
 const io = new Server(server, {
     cors: {
-        origin: ['http://localhost:5173'],
+        origin: [
+            'http://localhost:5173',
+            'https://lost-n-found-sandy.vercel.app',
+            'https://lost-n-found-pj949fa0u-raghavendra1729-cells-projects.vercel.app'
+        ],
         credentials: true
     }
 })
