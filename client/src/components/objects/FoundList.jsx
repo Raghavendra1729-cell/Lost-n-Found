@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { getImageUrl } from '../../utils/imageUtils'
 import { ContactModal } from '../modals'
 
-const FoundList = ({ items, onMatches, onArchive, onDelete, matches, currentUser, onResolve }) => {
+const FoundList = ({ items, onMatches, onArchive, onDelete, matches, currentUser, onResolve, onOpenEnhancedChat }) => {
   const [contactModalOpen, setContactModalOpen] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null)
 
@@ -99,6 +99,7 @@ const FoundList = ({ items, onMatches, onArchive, onDelete, matches, currentUser
         item={selectedItem}
         currentUser={currentUser}
         onResolve={handleResolve}
+        onOpenEnhancedChat={onOpenEnhancedChat}
       />
     </>
   )

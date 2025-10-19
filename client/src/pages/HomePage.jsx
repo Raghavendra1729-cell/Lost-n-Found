@@ -9,6 +9,7 @@ import LandingPage from '../components/common/LandingPage'
 import ReportModal from '../components/modals/ReportModal'
 import { createObject } from '../api/object_api'
 import { PhoneModal, SmartMatchesModal, ChatModal } from '../components/modals'
+import { ChatInterface, UnifiedChat, EnhancedChat } from '../components/chat'
 import { NotificationProvider } from '../contexts/NotificationContext'
 import '../components/ui/Animations.css'
 
@@ -22,6 +23,10 @@ const HomePage = () => {
   const [submittedItem, setSubmittedItem] = useState(null)
   const [showChat, setShowChat] = useState(false)
   const [currentChat, setCurrentChat] = useState(null)
+  const [currentOtherUser, setCurrentOtherUser] = useState(null)
+  const [showUnifiedChat, setShowUnifiedChat] = useState(false)
+  const [showEnhancedChat, setShowEnhancedChat] = useState(false)
+  const [newMessage, setNewMessage] = useState('')
 
   useEffect(() => {
     // Handle Google OAuth callback first
@@ -108,6 +113,34 @@ const HomePage = () => {
     setShowChat(true)
   }
 
+
+  const handleCloseChat = () => {
+    setShowChat(false)
+    setCurrentChat(null)
+    setCurrentOtherUser(null)
+  }
+
+  const handleOpenUnifiedChat = () => {
+    setShowUnifiedChat(true)
+  }
+
+  const handleCloseUnifiedChat = () => {
+    setShowUnifiedChat(false)
+  }
+
+  const handleOpenEnhancedChat = (user = null, greetingMessage = null) => {
+    setShowEnhancedChat(true)
+    if (user && greetingMessage) {
+      // Store the user and greeting message for the enhanced chat to use
+      setCurrentOtherUser(user)
+      setNewMessage(greetingMessage)
+    }
+  }
+
+  const handleCloseEnhancedChat = () => {
+    setShowEnhancedChat(false)
+  }
+
   return (
     <NotificationProvider>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
@@ -128,7 +161,8 @@ const HomePage = () => {
           {user ? (
             <Dashboard 
               user={user} 
-              onReportItem={handleReportItem} 
+              onReportItem={handleReportItem}
+              onOpenUnifiedChat={handleOpenEnhancedChat}
               key={refreshKey}
             />
           ) : (
@@ -164,15 +198,56 @@ const HomePage = () => {
           onClose={() => setShowSmartMatches(false)}
           itemData={submittedItem}
           currentUser={user}
-          onOpenChat={handleOpenChat}
+          onOpenChat={handleOpenEnhancedChat}
         />
 
+
         <ChatModal
-          isOpen={showChat}
+          isOpen={showChat && currentChat && !currentOtherUser}
           onClose={() => setShowChat(false)}
           chat={currentChat}
           currentUser={user}
         />
+
+        {/* Global Chat Interface */}
+        {showChat && currentChat && currentOtherUser && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg w-full max-w-4xl h-[80vh] max-h-[600px]">
+              <ChatInterface
+                chat={currentChat}
+                otherUser={currentOtherUser}
+                currentUser={user}
+                onClose={handleCloseChat}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Enhanced Chat Interface */}
+        {showEnhancedChat && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg w-full max-w-7xl h-[90vh] max-h-[800px]">
+              <EnhancedChat
+                currentUser={user}
+                onClose={handleCloseEnhancedChat}
+                initialUser={currentOtherUser}
+                initialMessage={newMessage}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Unified Chat Interface */}
+        {showUnifiedChat && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-lg w-full max-w-6xl h-[85vh] max-h-[700px]">
+              <UnifiedChat
+                currentUser={user}
+                onClose={handleCloseUnifiedChat}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Footer */}
         <footer className="relative z-10 text-center py-8 text-gray-400 border-t border-gray-800">

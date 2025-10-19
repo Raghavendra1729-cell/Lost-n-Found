@@ -4,3 +4,4 @@ export * from './layout';
 export * from './modals';
 export * from './dashboard';
 export * from './common';
+export * from './chat';

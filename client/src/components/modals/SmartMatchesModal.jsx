@@ -43,9 +43,12 @@ const SmartMatchesModal = ({ isOpen, onClose, itemData, currentUser, onOpenChat 
 
   const handleStartChat = async (match) => {
     try {
-      const response = await getOrCreateChat(match.userId._id, itemData?._id)
-      if (onOpenChat && currentUser) {
-        onOpenChat(response.chat, currentUser)
+      // Close the modal first
+      onClose()
+      
+      // Open the enhanced chat interface
+      if (onOpenChat) {
+        onOpenChat(match.userId, `Hi ${match.userId.name}! I found a potential match for your ${match.type} item "${match.name}". Let's connect!`)
       }
     } catch (error) {
       console.error('Error starting chat:', error)

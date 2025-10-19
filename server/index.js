@@ -10,6 +10,7 @@ import authRoutes from './routes/auth_routes.js'
 import objectRoutes from './routes/object_routes.js'
 import imageRoutes from './routes/image_routes.js'
 import chatRoutes from './routes/chat_routes.js'
+import userRoutes from './routes/user_routes.js'
 import cookieParser from 'cookie-parser'
 import { saveMessage } from './controllers/chat_controllers.js'
 
@@ -57,6 +58,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/objects', objectRoutes)
 app.use('/api/images', imageRoutes)
 app.use('/api/chat', chatRoutes)
+app.use('/api/users', userRoutes)
 
 
 

@@ -6,7 +6,7 @@ import ArchiveList from '../objects/ArchiveList'
 import SearchBar from '../objects/SearchBar'
 import SearchResults from '../objects/SearchResults'
 
-const Dashboard = ({ user, onReportItem }) => {
+const Dashboard = ({ user, onReportItem, onOpenUnifiedChat }) => {
   const [items, setItems] = useState([])
   const [archive, setArchive] = useState([])
   const [matches, setMatches] = useState({})
@@ -68,6 +68,19 @@ const Dashboard = ({ user, onReportItem }) => {
           <span className="text-blue-300 font-semibold">{user.name}</span>! 
           Manage your lost and found items efficiently.
         </p>
+        
+        {/* Chat Button */}
+          <div className="mt-6">
+            <button
+              onClick={onOpenUnifiedChat}
+              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-purple-500/25 transform hover:scale-105"
+            >
+              <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+              </svg>
+              Messages & Chat
+            </button>
+          </div>
       </div>
 
       {/* Main Content */}
@@ -144,13 +157,13 @@ const Dashboard = ({ user, onReportItem }) => {
             {activeTab === 'lost' && (
               <div>
                 <h3 className="text-xl font-bold text-white mb-4 professional-text-shadow">Lost Items</h3>
-                <LostList items={lostItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} currentUser={user} onResolve={handleResolve} />
+                <LostList items={lostItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} currentUser={user} onResolve={handleResolve} onOpenEnhancedChat={onOpenUnifiedChat} />
               </div>
             )}
             {activeTab === 'found' && (
               <div>
                 <h3 className="text-xl font-bold text-white mb-4 professional-text-shadow">Found Items</h3>
-                <FoundList items={foundItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} currentUser={user} onResolve={handleResolve} />
+                <FoundList items={foundItems} onMatches={handleMatches} onArchive={handleArchive} onDelete={handleDelete} matches={matches} currentUser={user} onResolve={handleResolve} onOpenEnhancedChat={onOpenUnifiedChat} />
               </div>
             )}
             {activeTab === 'archive' && (

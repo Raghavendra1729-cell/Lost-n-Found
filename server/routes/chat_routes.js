@@ -1,22 +1,28 @@
 import express from 'express'
-import { getOrCreateChat, getUserChats, getChatMessages, resolveChat, archiveChat } from '../controllers/chat_controllers.js'
+import { getOrCreateChat, getUserChats, sendMessage, markMessagesAsRead, getOrCreateGlobalChat, getChatMessages } from '../controllers/chat_controllers.js'
 import { authMiddleware } from '../middlewares/auth_middleware.js'
 
 const router = express.Router()
 
-// Get or create chat between two users
-router.post('/create', authMiddleware, getOrCreateChat)
+// All routes require authentication
+router.use(authMiddleware)
+
+// Get or create chat between two users for a specific item
+router.post('/chat', getOrCreateChat)
 
 // Get all chats for current user
-router.get('/list', authMiddleware, getUserChats)
+router.get('/chats', getUserChats)
 
 // Get messages for a specific chat
-router.get('/:chatId/messages', authMiddleware, getChatMessages)
+router.get('/:chatId/messages', getChatMessages)
 
-// Resolve chat and mark related item as resolved
-router.post('/:chatId/resolve', authMiddleware, resolveChat)
+// Send a message
+router.post('/message', sendMessage)
 
-// Archive chat
-router.post('/:chatId/archive', authMiddleware, archiveChat)
+// Mark messages as read
+router.post('/mark-read', markMessagesAsRead)
+
+// Get or create global chat between two users (not item-specific)
+router.post('/global-chat', getOrCreateGlobalChat)
 
 export default router

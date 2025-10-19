@@ -1,36 +1,37 @@
 import Chat from '../models/chat_model.js'
 import Object from '../models/object_model.js'
+import User from '../models/user_model.js'
 
 // Get or create chat between two users
 export const getOrCreateChat = async (req, res) => {
   try {
-    const { otherUserId, itemId } = req.body
+    const { itemId, receiverId } = req.body
     const currentUserId = req.user._id
 
-    if (!otherUserId) {
-      return res.status(400).json({ message: 'Other user ID is required' })
+    if (!receiverId) {
+      return res.status(400).json({ message: 'Receiver ID is required' })
     }
 
     // Check if chat already exists between these users for this specific item
     let chat = await Chat.findOne({
-      participants: { $all: [currentUserId, otherUserId] },
+      participants: { $all: [currentUserId, receiverId] },
       itemId: itemId || null
-    }).populate('participants', 'name email')
+    }).populate('participants', 'name email _id')
 
     if (!chat) {
       // Create new chat
       chat = await Chat.create({
-        participants: [currentUserId, otherUserId],
+        participants: [currentUserId, receiverId],
         itemId: itemId || null,
         messages: [],
         unreadCounts: [
           { userId: currentUserId, count: 0 },
-          { userId: otherUserId, count: 0 }
+          { userId: receiverId, count: 0 }
         ]
       })
       
       // Populate participants
-      await chat.populate('participants', 'name email')
+        await chat.populate('participants', 'name email _id')
     }
 
     res.status(200).json({ chat })
@@ -49,7 +50,7 @@ export const getUserChats = async (req, res) => {
       participants: userId,
       status: 'active'
     })
-    .populate('participants', 'name email')
+    .populate('participants', 'name email _id')
     .populate('itemId', 'name type location status')
     .sort({ lastMessageTime: -1 })
 
@@ -69,7 +70,7 @@ export const getChatMessages = async (req, res) => {
     const chat = await Chat.findOne({
       _id: chatId,
       participants: userId
-    }).populate('participants', 'name email')
+    }).populate('participants', 'name email _id')
 
     if (!chat) {
       return res.status(404).json({ message: 'Chat not found' })
@@ -193,11 +194,167 @@ export const archiveChat = async (req, res) => {
   }
 }
 
+// Send a message
+export const sendMessage = async (req, res) => {
+  try {
+    const { receiverId, content, itemId } = req.body
+    const senderId = req.user._id
+
+    if (!receiverId || !content) {
+      return res.status(400).json({ message: 'Receiver ID and content are required' })
+    }
+
+    // Find or create chat
+    let chat = await Chat.findOne({
+      participants: { $all: [senderId, receiverId] },
+      itemId: itemId || null
+    })
+
+    if (!chat) {
+      chat = await Chat.create({
+        participants: [senderId, receiverId],
+        itemId: itemId || null,
+        messages: [],
+        unreadCounts: [
+          { userId: senderId, count: 0 },
+          { userId: receiverId, count: 1 }
+        ]
+      })
+    }
+
+    // Get sender information
+    const sender = await User.findById(senderId)
+    
+    // Create message
+    const message = {
+      senderId,
+      senderName: sender?.name || 'Unknown User',
+      content,
+      timestamp: new Date(),
+      status: 'sent'
+    }
+
+    // Add message to chat
+    chat.messages.push(message)
+    
+    // Update unread count for receiver
+    const receiverUnread = chat.unreadCounts.find(u => u.userId.toString() === receiverId)
+    if (receiverUnread) {
+      receiverUnread.count += 1
+    }
+
+    await chat.save()
+
+    res.json({
+      success: true,
+      message: {
+        _id: message._id,
+        senderId,
+        content,
+        timestamp: message.timestamp,
+        status: 'sent'
+      },
+      chat: chat
+    })
+  } catch (error) {
+    console.error('Send message error:', error)
+    res.status(500).json({ message: 'Failed to send message', error: error.message })
+  }
+}
+
+// Mark messages as read
+export const markMessagesAsRead = async (req, res) => {
+  try {
+    const { senderId, itemId } = req.body
+    const currentUserId = req.user._id
+
+    // Find chat
+    const chat = await Chat.findOne({
+      participants: { $all: [currentUserId, senderId] },
+      itemId: itemId || null
+    })
+
+    if (!chat) {
+      return res.status(404).json({ message: 'Chat not found' })
+    }
+
+    // Reset unread count for current user
+    const userUnread = chat.unreadCounts.find(u => u.userId.toString() === currentUserId)
+    if (userUnread) {
+      userUnread.count = 0
+    }
+
+    await chat.save()
+
+    res.json({
+      success: true,
+      message: 'Messages marked as read'
+    })
+  } catch (error) {
+    console.error('Mark messages as read error:', error)
+    res.status(500).json({ message: 'Failed to mark messages as read', error: error.message })
+  }
+}
+
+// Get or create global chat between two users (not item-specific)
+export const getOrCreateGlobalChat = async (req, res) => {
+  try {
+    const { receiverId } = req.body
+    const currentUserId = req.user._id
+
+    if (!receiverId) {
+      return res.status(400).json({ message: 'Receiver ID is required' })
+    }
+
+    // Check if global chat already exists between these users
+    let chat = await Chat.findOne({
+      participants: { $all: [currentUserId, receiverId] },
+      itemId: null // Global chat has no itemId
+    }).populate('participants', 'name email')
+
+    if (!chat) {
+      // Create new global chat
+      chat = await Chat.create({
+        participants: [currentUserId, receiverId],
+        itemId: null, // Global chat
+        messages: [],
+        unreadCounts: [
+          { userId: currentUserId, count: 0 },
+          { userId: receiverId, count: 0 }
+        ]
+      })
+
+      // Populate participants
+        await chat.populate('participants', 'name email _id')
+    }
+
+    // Transform messages to include sender names
+    const transformedMessages = chat.messages.map(msg => ({
+      ...msg.toObject(),
+      senderName: msg.senderName || 'Unknown User'
+    }))
+
+    res.json({
+      success: true,
+      chat: {
+        ...chat.toObject(),
+        messages: transformedMessages
+      }
+    })
+  } catch (error) {
+    console.error('Get or create global chat error:', error)
+    res.status(500).json({ message: 'Failed to get or create global chat', error: error.message })
+  }
+}
+
 export default {
   getOrCreateChat,
   getUserChats,
   getChatMessages,
   saveMessage,
   resolveChat,
-  archiveChat
+  archiveChat,
+  sendMessage,
+  markMessagesAsRead,
+  getOrCreateGlobalChat
 }

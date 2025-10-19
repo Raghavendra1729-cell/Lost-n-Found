@@ -63,10 +63,10 @@ const chatSchema = new mongoose.Schema({
   timestamps: true
 })
 
-// Ensure participants array has exactly 2 users
+// Ensure participants array has at least 2 users
 chatSchema.pre('save', function(next) {
-  if (this.participants.length !== 2) {
-    return next(new Error('Chat must have exactly 2 participants'))
+  if (this.participants.length < 2) {
+    return next(new Error('Chat must have at least 2 participants'))
   }
   next()
 })
