@@ -17,7 +17,9 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     // Initialize socket connection
-    const newSocket = io('http://localhost:3000', {
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+    const socketHost = apiBase.replace(/\/$/, '').replace(/\/api$/, '')
+    const newSocket = io(socketHost, {
       withCredentials: true,
       transports: ['websocket']
     })

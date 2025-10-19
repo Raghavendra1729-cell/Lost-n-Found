@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // Create axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
   withCredentials: true, // Important for cookies
   timeout: 10000
 })
@@ -89,8 +89,10 @@ export const getUserProfile = async () => {
 
 // 5. Google OAuth
 export const googleAuth = () => {
-  // Redirect to Google OAuth
-  window.location.href = 'http://localhost:3000/api/auth/google'
+  // Redirect to Google OAuth on the configured API host
+  const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+  const host = apiBase.replace(/\/$/, '').replace(/\/api$/, '')
+  window.location.href = `${host}/api/auth/google`
 }
 
 // 6. Handle Google OAuth callback
