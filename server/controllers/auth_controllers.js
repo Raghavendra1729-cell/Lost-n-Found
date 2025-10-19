@@ -24,7 +24,7 @@ const register = async (req, res) => {
         const token = generateToken(user._id)
         res.cookie('token', token, { 
             httpOnly: true, 
-            secure: process.env.NODE_ENV === 'production', // Only secure in production
+            secure: true, // Always secure for HTTPS
             sameSite: 'none', // Changed to 'none' for cross-origin requests
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
             path: '/' // Explicitly set path
@@ -56,7 +56,7 @@ const login = async (req, res) => {
         console.log('🔍 Setting cookie with token...')
         res.cookie('token', token, { 
             httpOnly: true, 
-            secure: process.env.NODE_ENV === 'production', // Only secure in production
+            secure: true, // Always secure for HTTPS
             sameSite: 'none', // Changed to 'none' for cross-origin requests
             maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
             path: '/' // Explicitly set path
@@ -74,7 +74,7 @@ const logout = async (req, res) => {
     try {
         res.cookie('token', '', { 
             httpOnly: true, 
-            secure: process.env.NODE_ENV === 'production',
+            secure: true, // Always secure for HTTPS
             sameSite: 'none', 
             maxAge: 0,
             path: '/'
@@ -149,7 +149,7 @@ const googleCallback = (req, res, next) => {
             // Set cookie
             res.cookie('token', token, { 
                 httpOnly: true, 
-                secure: process.env.NODE_ENV === 'production',
+                secure: true, // Always secure for HTTPS
                 sameSite: 'none', 
                 maxAge: 30 * 24 * 60 * 60 * 1000,
                 path: '/'
