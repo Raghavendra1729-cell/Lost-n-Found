@@ -26,6 +26,17 @@
 - [Acknowledgments](#acknowledgments)
 
 ---
+## ⚠️ Google Safe Browsing Warning Notice
+
+Google has temporarily flagged this site due to a **CSRF verification issue**, which may trigger a **“Dangerous Site”** warning in Chrome.  
+We have **reported this as a false positive**, and the issue is currently under review.
+
+Until Google resolves this, you can still access the project by clicking  
+**“this unsafe site”** on the warning page if you understand the risk.
+
+> **Note:** The project does **not** contain malware or phishing content.  
+> This warning appears due to a **browser-side false flag** caused by a **CSRF token verification error**.
+<img width="767" height="707" alt="Screenshot 2025-10-20 at 3 47 14 PM" src="https://github.com/user-attachments/assets/942e1cb4-c780-4b85-a9b2-780a7b314146" />
 
 ## 🎯 About the Project
 
@@ -63,14 +74,14 @@ Every day, countless items are lost and found in public spaces—schools, office
 
 ## 📖 Tutorial - How to Use
 
-> **Note:** Screenshots are placeholders. Replace `docs/images/` with actual application screenshots.
+
 
 ### Step 1: Landing Page - First Impressions
 
 When you visit the application, you'll see a clean, modern interface with a powerful search engine at the center.
 
-![Landing Page](docs/images/01-landing-page.png)
-*The homepage featuring the search interface and quick actions*
+
+<img width="1710" height="963" alt="Screenshot 2025-10-20 at 3 26 19 PM" src="https://github.com/user-attachments/assets/b33451a7-9f4d-4dfe-a112-086dbea0af46" />
 
 **What You Can Do:**
 - Search for lost or found items without logging in
@@ -83,12 +94,12 @@ When you visit the application, you'll see a clean, modern interface with a powe
 
 Click the **Login** or **Register** button in the top-right corner.
 
-![Login Page](docs/images/02-login-page.png)
-*Clean login interface with Google OAuth option*
+<img width="446" height="938" alt="Screenshot 2025-10-20 at 3 27 17 PM" src="https://github.com/user-attachments/assets/291be8f7-9e85-41f3-b083-4949d8581e96" />
 
 **Authentication Options:**
 - **Google OAuth:** Quick sign-in with your Google account (recommended)
 - **Email Registration:** Create an account with email and password
+<img width="443" height="648" alt="Screenshot 2025-10-20 at 3 28 06 PM" src="https://github.com/user-attachments/assets/f10713af-e62b-40b2-9342-23e015c6dfe4" />
 
 ![Google OAuth Flow](docs/images/03-google-oauth.png)
 *Secure Google authentication flow*
@@ -101,8 +112,8 @@ Click the **Login** or **Register** button in the top-right corner.
 
 After logging in, you're taken to your personalized dashboard.
 
-![User Dashboard](docs/images/04-dashboard.png)
-*Personalized dashboard showing welcome message and quick actions*
+
+<img width="1710" height="948" alt="Screenshot 2025-10-20 at 3 28 53 PM" src="https://github.com/user-attachments/assets/c82f3a00-b241-4f6a-a1bc-bfcead1030fa" />
 
 **Dashboard Features:**
 - **Welcome Banner:** Personalized greeting with your name
@@ -120,8 +131,7 @@ After logging in, you're taken to your personalized dashboard.
 
 Click the **"Report Lost Item"** button to open the reporting form.
 
-![Report Lost Item Modal](docs/images/05-report-lost-modal.png)
-*Comprehensive form for reporting lost items*
+<img width="892" height="846" alt="Screenshot 2025-10-20 at 3 29 36 PM" src="https://github.com/user-attachments/assets/940cd57a-09a8-4f9d-8715-4fd8464601bc" />
 
 **Required Fields:**
 - **Item Name:** (e.g., "iPhone 13", "Black Wallet", "Blue Backpack")
@@ -144,8 +154,8 @@ Click the **"Report Lost Item"** button to open the reporting form.
 
 Click the **"Report Found Item"** button—the form is similar to the lost item form.
 
-![Report Found Item Modal](docs/images/06-report-found-modal.png)
-*Form for reporting found items with image upload*
+
+<img width="892" height="857" alt="Screenshot 2025-10-20 at 3 30 28 PM" src="https://github.com/user-attachments/assets/6cfc84f9-6998-4141-a3de-7f5af8032694" />
 
 **Best Practices:**
 - Describe the item accurately without revealing all details (for verification)
@@ -158,8 +168,8 @@ Click the **"Report Found Item"** button—the form is similar to the lost item 
 
 Use the search interface to find items matching your criteria.
 
-![Search Interface](docs/images/07-search-interface.png)
-*Advanced search with filters for name, location, and category*
+<img width="1111" height="154" alt="Screenshot 2025-10-20 at 3 30 58 PM" src="https://github.com/user-attachments/assets/8dcb66aa-05e9-40a5-8901-d5a82461441d" />
+
 
 **Search Options:**
 - **Item Name:** Free-text search (e.g., "phone", "keys", "wallet")
@@ -174,7 +184,8 @@ Use the search interface to find items matching your criteria.
 
 **Search Results:**
 
-![Search Results](docs/images/08-search-results.png)
+<img width="1764" height="1358" alt="image" src="https://github.com/user-attachments/assets/18ae1c67-59da-4d11-a25e-a352b590cb0c" />
+
 *Grid layout showing matching items with images and details*
 
 Each result card shows:
@@ -188,9 +199,7 @@ Each result card shows:
 ### Step 7: Viewing Item Details
 
 Click on any item to see full details.
-
-![Item Detail Page](docs/images/09-item-detail.png)
-*Detailed view with full description, images, and contact options*
+<img width="1095" height="344" alt="Screenshot 2025-10-20 at 3 39 50 PM" src="https://github.com/user-attachments/assets/79ec7332-ab79-4942-b664-b4c4fb63ffaa" />
 
 **Available Information:**
 - High-resolution images
@@ -198,7 +207,6 @@ Click on any item to see full details.
 - Location and date
 - Reporter's name (with privacy controls)
 - Contact options
-- Map view (if location coordinates available)
 
 **Actions You Can Take:**
 - **Message the Reporter:** Start a chat conversation
@@ -211,8 +219,9 @@ Click on any item to see full details.
 
 Click **"Messages & Chat"** to access your conversations.
 
-![Chat Interface - List View](docs/images/10-chat-list.png)
-*Sidebar showing all your conversations with recent messages*
+ <img width="309" height="99" alt="Screenshot 2025-10-20 at 3 42 18 PM" src="https://github.com/user-attachments/assets/57bfac5f-97a1-4e79-ac2e-98c38f25d3ff" />
+
+<img width="1275" height="799" alt="Screenshot 2025-10-20 at 3 42 35 PM" src="https://github.com/user-attachments/assets/3c78e89f-1c08-4837-bf58-eac6618b8993" />
 
 **Chat Features:**
 - **Conversation List:** All your chats with timestamps
@@ -243,8 +252,8 @@ Click **"Messages & Chat"** to access your conversations.
 
 Click your name or avatar to access profile settings.
 
-![User Profile](docs/images/12-user-profile.png)
 *Profile management interface*
+<img width="681" height="778" alt="Screenshot 2025-10-20 at 3 40 33 PM" src="https://github.com/user-attachments/assets/ba686727-05b8-4d1d-9843-e08c162be48d" />
 
 **What You Can Manage:**
 - **Personal Information:** Name, email, phone number
@@ -259,19 +268,13 @@ Click your name or avatar to access profile settings.
 
 View your active and archived items through the dashboard tabs.
 
-![Lost Items Tab](docs/images/13-lost-items-tab.png)
-*View and manage all your reported lost items*
-
-![Found Items Tab](docs/images/14-found-items-tab.png)
-*View and manage all your reported found items*
+<img width="1105" height="563" alt="Screenshot 2025-10-20 at 3 41 13 PM" src="https://github.com/user-attachments/assets/aad19d1c-18f4-4b01-918b-142a5c882fc2" />
 
 **Item Management:**
 - **Edit:** Update item details or images
 - **Archive:** Mark items as resolved/returned
 - **Delete:** Remove items from the system
 - **Status:** See match suggestions and activity
-
-![Archive View](docs/images/15-archive-view.png)
 *Historical view of resolved cases*
 
 **Archive Features:**
@@ -281,26 +284,14 @@ View your active and archived items through the dashboard tabs.
 
 ---
 
-### Step 11: Notifications & Updates
 
-Stay informed about new matches and messages.
 
-![Notifications](docs/images/16-notifications.png)
-*Real-time notification system*
-
-**You'll Receive Notifications For:**
-- New potential matches for your lost items
-- Messages from other users
-- Status updates on your reports
-- System announcements
-
----
-
-### Step 12: Logging Out
+### Step 11: Logging Out
 
 Click **"Logout"** in the top-right menu when you're done.
 
-![Logout](docs/images/17-logout.png)
+<img width="1710" height="55" alt="Screenshot 2025-10-20 at 3 41 46 PM" src="https://github.com/user-attachments/assets/e1299206-e6c6-49bb-be7f-223c918e8594" />
+
 *Secure logout process*
 
 Your session is cleared, cookies are removed, and you're redirected to the landing page.
