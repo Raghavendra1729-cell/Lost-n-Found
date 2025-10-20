@@ -908,11 +908,8 @@ SOFTWARE.
 
 **Raghavendra Linga**
 
-- 🌐 **Portfolio:** [your-portfolio.com](https://your-portfolio.com)
-- 💼 **LinkedIn:** [linkedin.com/in/raghavendra-linga](https://linkedin.com/in/raghavendra-linga)
-- 🐙 **GitHub:** [@your-username](https://github.com/your-username)
-- 📧 **Email:** [your.email@example.com](mailto:your.email@example.com)
-- 🐦 **Twitter:** [@your-twitter](https://twitter.com/your-twitter)
+
+- 📧 **Email:** [your.email@example.com](mailto:lingaraghawendra@gmail.com)
 
 **About Me:**
 Full-stack developer passionate about building solutions that make a real-world impact. Experienced in React, Node.js, and modern web technologies. Always learning and exploring new tech.
@@ -935,14 +932,7 @@ Special thanks to:
 
 ---
 
-## 📞 Support
 
-If you encounter any issues or have questions:
-
-1. **Check the [FAQ](#-faq)** section below
-2. **Search existing [GitHub Issues](https://github.com/your-username/lost-n-found/issues)**
-3. **Open a new issue** with detailed information
-4. **Contact the author** via email
 
 ---
 
@@ -988,15 +978,7 @@ Future enhancements planned:
 
 ---
 
-## 📊 Project Stats
 
-- **Lines of Code:** ~15,000+
-- **Components:** 30+
-- **API Endpoints:** 20+
-- **Development Time:** 3 months
-- **Contributors:** 1 (open for more!)
-
----
 
 ## 🔗 Useful Links
 
@@ -1011,7 +993,7 @@ Future enhancements planned:
 
 <div align="center">
 
-**Built with ❤️ by [Raghavendra Linga](https://github.com/your-username)**
+**Built with ❤️ by [Raghavendra Linga](https://github.com/Raghavendra1729-cell)**
 
 ⭐ Star this repo if you find it helpful! ⭐
 
