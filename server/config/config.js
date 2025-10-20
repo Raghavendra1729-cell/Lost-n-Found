@@ -23,6 +23,10 @@ const config = {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   
+  // URL Configuration
+  BACKEND_URL: process.env.BACKEND_URL || 'http://localhost:3000',
+  CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
+  
   // CORS Configuration
   CORS_ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:5173',
   

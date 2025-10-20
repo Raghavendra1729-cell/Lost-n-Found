@@ -2,129 +2,119 @@ import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import connectDB from './config/database.js'
-import 'dotenv/config'
-import cors from 'cors'
-import session from 'express-session'
-import passport from './config/passport.js'
+import config from './config/config.js'
+import logger from './utils/logger.js'
+
+// Import middleware
+import { 
+    httpsRedirect, 
+    securityHeaders, 
+    corsConfig, 
+    cookieConfig, 
+    sessionConfig, 
+    passportConfig 
+} from './middlewares/app_middleware.js'
+import { errorHandler, notFound } from './middlewares/error_middleware.js'
+
+// Import routes
 import authRoutes from './routes/auth_routes.js'
 import objectRoutes from './routes/object_routes.js'
 import imageRoutes from './routes/image_routes.js'
 import chatRoutes from './routes/chat_routes.js'
 import userRoutes from './routes/user_routes.js'
-import cookieParser from 'cookie-parser'
-import { saveMessage } from './controllers/chat_controllers.js'
 
-//initialize express app
+// Import socket handlers
+import { setupSocketHandlers } from './services/socket_service.js'
+
+// Initialize Express app
 const app = express()
 const server = createServer(app)
 
-//middlewares
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser())
-app.use(cors({
-    origin: [
-        process.env.CLIENT_URL,
-        process.env.CORS_ORIGIN,
-        'http://localhost:5173' // Keep for local development
-    ].filter(Boolean), // Remove any undefined values
-    credentials: true
-}))
-
-// Session configuration
-app.use(session({
-    secret: process.env.SESSION_SECRET || 'your-session-secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 30 * 24 * 60 * 60 * 1000 
-    }
-}))
-
-// Passport middleware
-app.use(passport.initialize())
-app.use(passport.session())
-
+// Apply middleware in order
+app.use(httpsRedirect)                    // Force HTTPS in production
+app.use(securityHeaders)                  // Security headers
+app.use(express.json({ limit: '10mb' }))  // Parse JSON with size limit
+app.use(express.urlencoded({ extended: true, limit: '10mb' }))
+app.use(cookieConfig)                     // Cookie parser
+app.use(corsConfig)                       // CORS configuration
+app.use(sessionConfig)                    // Session configuration
+app.use(...passportConfig())              // Passport configuration
 
 // Health check endpoint
 app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    environment: process.env.NODE_ENV || 'development'
-  })
+    res.status(200).json({
+        status: 'OK',
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        environment: config.NODE_ENV,
+        version: process.env.npm_package_version || '1.0.0'
+    })
 })
 
-//routes
+// API Routes
 app.use('/api/auth', authRoutes)
 app.use('/api/objects', objectRoutes)
 app.use('/api/images', imageRoutes)
 app.use('/api/chat', chatRoutes)
 app.use('/api/users', userRoutes)
 
+// 404 handler
+app.use(notFound)
 
-
-
+// Error handler (must be last)
+app.use(errorHandler)
 
 // Initialize Socket.IO
 const io = new Server(server, {
     cors: {
         origin: [
-            process.env.CLIENT_URL,
-            process.env.CORS_ORIGIN,
-            'http://localhost:5173' // Keep for local development
-        ].filter(Boolean), // Remove any undefined values
+            config.CLIENT_URL,
+            config.CORS_ORIGIN,
+            'http://localhost:5173'
+        ].filter(Boolean),
         credentials: true
     }
 })
 
-// Socket.IO connection handling
-io.on('connection', (socket) => {
-    console.log('User connected:', socket.id)
+// Setup socket handlers
+setupSocketHandlers(io)
 
-    // Join chat room
-    socket.on('join-chat', (chatId) => {
-        socket.join(chatId)
-        console.log(`User ${socket.id} joined chat ${chatId}`)
-    })
+// Start server
+const startServer = async () => {
+    try {
+        await connectDB()
+        server.listen(config.PORT, () => {
+            logger.info(`🚀 Server running in ${config.NODE_ENV} mode on port ${config.PORT}`)
+            logger.info(`📡 Socket.IO server initialized`)
+        })
+    } catch (error) {
+        logger.error('Failed to start server:', error)
+        process.exit(1)
+    }
+}
 
-    // Leave chat room
-    socket.on('leave-chat', (chatId) => {
-        socket.leave(chatId)
-        console.log(`User ${socket.id} left chat ${chatId}`)
-    })
-
-    // Handle new message
-    socket.on('send-message', async (data) => {
-        try {
-            const { chatId, senderId, content } = data
-            
-            // Save message to database
-            const message = await saveMessage(chatId, senderId, content)
-            
-            // Emit message to all users in the chat room
-            io.to(chatId).emit('new-message', {
-                message,
-                chatId
-            })
-        } catch (error) {
-            console.error('Error sending message:', error)
-            socket.emit('message-error', { error: 'Failed to send message' })
-        }
-    })
-
-    socket.on('disconnect', () => {
-        console.log('User disconnected:', socket.id)
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err) => {
+    logger.error('Unhandled Promise Rejection:', err)
+    server.close(() => {
+        process.exit(1)
     })
 })
 
-//start the server
-server.listen(process.env.PORT, async () => {
-    await connectDB()
-    console.log(`Server is running on port ${process.env.PORT}`)
+// Handle uncaught exceptions
+process.on('uncaughtException', (err) => {
+    logger.error('Uncaught Exception:', err)
+    process.exit(1)
 })
 
+// Graceful shutdown
+process.on('SIGTERM', () => {
+    logger.info('SIGTERM received. Shutting down gracefully...')
+    server.close(() => {
+        logger.info('Process terminated')
+    })
+})
 
-export default app;
+startServer()
+
+export default app

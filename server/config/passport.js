@@ -1,15 +1,18 @@
 import passport from 'passport'
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20'
 import User from '../models/user_model.js'
+import config from './config.js'
 
 // Configure Google OAuth Strategy (guarded by env checks so deploys don't crash)
-const hasGoogleCreds = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
+const hasGoogleCreds = Boolean(config.GOOGLE_CLIENT_ID && config.GOOGLE_CLIENT_SECRET)
 
 if (hasGoogleCreds) {
     passport.use(new GoogleStrategy({
-        clientID: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: `${process.env.BACKEND_URL || 'http://localhost:3000'}/api/auth/google/callback`
+        clientID: config.GOOGLE_CLIENT_ID,
+        clientSecret: config.GOOGLE_CLIENT_SECRET,
+        callbackURL: config.NODE_ENV === 'production' 
+            ? `${config.BACKEND_URL}/api/auth/google/callback`
+            : `${config.BACKEND_URL || 'http://localhost:3000'}/api/auth/google/callback`
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             // Check if user already exists with this Google ID
