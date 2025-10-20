@@ -77,18 +77,32 @@ const updatePhone = asyncHandler(async (req, res) => {
 
 // Google OAuth Controllers
 const googleAuth = (req, res, next) => {
-    passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next)
+    // Generate and store CSRF state token for OAuth flow
+    const state = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
+    if (req.session) {
+        req.session.oauthState = state
+    }
+    
+    passport.authenticate('google', { scope: ['profile', 'email'], state })(req, res, next)
 }
 
 const googleCallback = (req, res, next) => {
     passport.authenticate('google', async (err, user) => {
         try {
+            const baseClient = config.CLIENT_URL || 'http://localhost:5173'
+            // Verify CSRF state token
+            if (!req.session || req.query.state !== req.session.oauthState) {
+                return res.redirect(`${baseClient}?auth=error&message=${encodeURIComponent('Invalid OAuth state')}`)
+            }
+            // Clear stored state
+            if (req.session) delete req.session.oauthState
+
             if (err) {
-                return res.redirect(`${config.CLIENT_URL || 'http://localhost:5173'}?auth=error&message=${encodeURIComponent(err.message)}`)
+                return res.redirect(`${baseClient}?auth=error&message=${encodeURIComponent(err.message)}`)
             }
             
             if (!user) {
-                return res.redirect(`${config.CLIENT_URL || 'http://localhost:5173'}?auth=error&message=Authentication failed`)
+                return res.redirect(`${baseClient}?auth=error&message=Authentication failed`)
             }
             
             const result = await authService.handleGoogleCallback(user)
@@ -102,14 +116,14 @@ const googleCallback = (req, res, next) => {
                 path: '/'
             })
             
-            const baseClient = config.CLIENT_URL || 'http://localhost:5173'
             if (result.needsPhone) {
                 return res.redirect(`${baseClient}?auth=success&needsPhone=true&token=${result.token}`)
             }
             
             res.redirect(`${baseClient}?auth=success&token=${result.token}`)
         } catch (error) {
-            res.redirect(`${config.CLIENT_URL || 'http://localhost:5173'}?auth=error&message=${encodeURIComponent(error.message)}`)
+            const baseClient = config.CLIENT_URL || 'http://localhost:5173'
+            res.redirect(`${baseClient}?auth=error&message=${encodeURIComponent(error.message)}`)
         }
     })(req, res, next)
 }

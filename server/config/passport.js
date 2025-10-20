@@ -12,8 +12,9 @@ if (hasGoogleCreds) {
         clientSecret: config.GOOGLE_CLIENT_SECRET,
         callbackURL: config.NODE_ENV === 'production' 
             ? `${config.BACKEND_URL}/api/auth/google/callback`
-            : `${config.BACKEND_URL || 'http://localhost:3000'}/api/auth/google/callback`
-    }, async (accessToken, refreshToken, profile, done) => {
+            : `${config.BACKEND_URL || 'http://localhost:3000'}/api/auth/google/callback`,
+        passReqToCallback: true
+    }, async (req, accessToken, refreshToken, profile, done) => {
         try {
             // Check if user already exists with this Google ID
             let existingUser = await User.findOne({ googleId: profile.id })
