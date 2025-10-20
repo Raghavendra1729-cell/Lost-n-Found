@@ -26,6 +26,17 @@
 - [Acknowledgments](#acknowledgments)
 
 ---
+## ⚠️ Google Safe Browsing Warning Notice
+
+Google has temporarily flagged this site due to a **CSRF verification issue**, which may trigger a **“Dangerous Site”** warning in Chrome.  
+We have **reported this as a false positive**, and the issue is currently under review.
+
+Until Google resolves this, you can still access the project by clicking  
+**“this unsafe site”** on the warning page if you understand the risk.
+
+> **Note:** The project does **not** contain malware or phishing content.  
+> This warning appears due to a **browser-side false flag** caused by a **CSRF token verification error**.
+<img width="767" height="707" alt="Screenshot 2025-10-20 at 3 47 14 PM" src="https://github.com/user-attachments/assets/942e1cb4-c780-4b85-a9b2-780a7b314146" />
 
 ## 🎯 About the Project
 
