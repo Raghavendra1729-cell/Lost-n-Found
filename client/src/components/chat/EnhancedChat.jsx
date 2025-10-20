@@ -69,6 +69,7 @@ const EnhancedChat = ({ currentUser, onClose, initialUser = null, initialMessage
         setSearchResults={setSearchResults}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        onClose={onClose}
       />
 
       {/* Chat Main Area */}
